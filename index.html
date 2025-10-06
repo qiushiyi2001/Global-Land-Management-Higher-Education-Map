@@ -107,7 +107,7 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            z-index: 1100;
+            z-index: 900;
         }
 
         .chart-container {
@@ -146,7 +146,6 @@
             font-size: 14px;
             text-anchor: middle;
             cursor: pointer;
-            pointer-events: auto;
         }
 
         .country-label .country-count {
@@ -243,7 +242,7 @@
 
     <div class="page-title-banner">Global Land Management Higher Education Map</div>
     <button type="button" class="btn btn-info btn-sm info-button" data-bs-toggle="modal" data-bs-target="#informationModal">
-        Information
+        Map Information
     </button>
 
     <div id="map"></div>
@@ -3182,7 +3181,9 @@ function showContinentStatistics() {
             className: 'continent-label',
             html: `<div style="color: white; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); text-align: center;">
                     ${continent}<br>
-                    <span style="font-size: 14px;">${stats.universities.length} universities ${stats.totalPrograms} programs ${stats.countries.size} countries</span>
+                    <span style="font-size: 14px; display: block;">${stats.universities.length} universities</span>
+                    <span style="font-size: 14px; display: block;">${stats.totalPrograms} programs</span>
+                    <span style="font-size: 14px; display: block;">${stats.countries.size} countries</span>
                    </div>`,
             iconSize: [160, 60]
         });
@@ -3441,9 +3442,9 @@ function createPopupContent(uni) {
     return `
         <div class="custom-popup">
             <h6 class="mb-2">${formatUniversityName(uni)}</h6>
-            <p class="mb-1"><strong>📍</strong> ${uni.city}, ${uni.country}</p>
+            <p class="mb-1"><strong>Location:</strong> ${uni.city}, ${uni.country}</p>
             <div class="mb-2">
-                <strong>📚 Programs:</strong>
+                <strong>Programs:</strong>
                 ${programsHtml}
             </div>
         </div>
@@ -3451,7 +3452,7 @@ function createPopupContent(uni) {
 }
 
 function showCountryDetails(country, stats) {
-    document.getElementById('panelTitle').textContent = `${country} - Land Management Education`;
+    document.getElementById('panelTitle').textContent = `${country}`;
     let detailsHtml = `
         <div class="mb-3">
             <h6>Overview</h6>
