@@ -88,9 +88,36 @@
         .badge-bachelor { background-color: #28a745; color: white; }
         .badge-master { background-color: #007bff; color: white; }
 
-        .search-box {
+        .page-title-banner {
             position: absolute;
             top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            z-index: 1100;
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .info-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1100;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 260px;
+        }
+
+        .search-box {
+            position: absolute;
+            top: 60px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 1000;
@@ -206,6 +233,11 @@
 <body>
     <!-- web elements -->
 
+    <div class="page-title-banner">Global Land Management Higher Education Mapping</div>
+    <button type="button" class="btn btn-info btn-sm info-button" data-bs-toggle="modal" data-bs-target="#informationModal">
+        Information
+    </button>
+
     <div id="map"></div>
 
     <div class="zoom-info">
@@ -290,8 +322,41 @@
         </div>
     </div>
 
+    <div class="modal fade" id="informationModal" tabindex="-1" aria-labelledby="informationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="informationModalLabel">Information Center</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="siteInfoSection" class="mb-4">
+                        <h6>Site Information</h6>
+                        <p class="text-muted">Add site explanation text here.</p>
+                    </div>
+                    <div class="mb-4">
+                        <h6>Quick Statistics</h6>
+                        <div class="chart-container">
+                            <canvas id="continentProgramsChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h6>Academic Overview</h6>
+                        <div class="chart-container">
+                            <canvas id="continentMasterChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
 <script>
     // database section
@@ -2855,6 +2920,10 @@ const pastelColors = [
     '#FFFAB5', '#B5FFE6', '#FFB5F5', '#B5BAFF', '#E8FFB5'
 ];
 
+const continentOrder = ['Europe', 'Asia', 'Africa', 'North America', 'South America', 'Oceania'];
+let quickStatsChart = null;
+let masterStatsChart = null;
+
 function formatUniversityName(uni) {
     if (uni.universityNative && uni.universityNative !== uni.university) {
         return `${uni.university}<br><span style="font-style: italic; font-size: 0.9em;">${uni.universityNative}</span>`;
@@ -2880,6 +2949,25 @@ function getContinentColor(continent) {
         'Oceania': '#1abc9c'
     };
     return colors[continent] || '#95a5a6';
+}
+
+function getContinentNameFromRegion(region) {
+    switch(region) {
+        case 'europe':
+            return 'Europe';
+        case 'asia':
+            return 'Asia';
+        case 'africa':
+            return 'Africa';
+        case 'northamerica':
+            return 'North America';
+        case 'southamerica':
+            return 'South America';
+        case 'oceania':
+            return 'Oceania';
+        default:
+            return null;
+    }
 }
 
 function initMap() {
@@ -2962,15 +3050,7 @@ function showContinentStatistics() {
     };
 
     currentData.forEach(uni => {
-        let continentName = "";
-        switch(uni.region) {
-            case "europe": continentName = "Europe"; break;
-            case "asia": continentName = "Asia"; break;
-            case "africa": continentName = "Africa"; break;
-            case "northamerica": continentName = "North America"; break;
-            case "southamerica": continentName = "South America"; break;
-            case "oceania": continentName = "Oceania"; break;
-        }
+        const continentName = getContinentNameFromRegion(uni.region);
 
         if (continentName && continentStats[continentName]) {
             continentStats[continentName].universities.push(uni);
@@ -3563,6 +3643,106 @@ function showMultipleResults(results, type) {
     document.getElementById('infoPanel').style.display = 'block';
 }
 
+function calculateContinentProgramSummaries(data) {
+    const programs = continentOrder.map(() => 0);
+    const masters = continentOrder.map(() => 0);
+
+    data.forEach(uni => {
+        const continentName = getContinentNameFromRegion(uni.region);
+        if (!continentName) return;
+
+        const index = continentOrder.indexOf(continentName);
+        if (index === -1) return;
+
+        programs[index] += uni.programs.length;
+        uni.programs.forEach(program => {
+            if (program.level === 'master') {
+                masters[index] += 1;
+            }
+        });
+    });
+
+    return { programs, masters };
+}
+
+function renderInformationCharts() {
+    const { programs, masters } = calculateContinentProgramSummaries(currentData);
+
+    const programCtx = document.getElementById('continentProgramsChart');
+    const masterCtx = document.getElementById('continentMasterChart');
+
+    if (!programCtx || !masterCtx) {
+        return;
+    }
+
+    if (quickStatsChart) {
+        quickStatsChart.destroy();
+    }
+    if (masterStatsChart) {
+        masterStatsChart.destroy();
+    }
+
+    quickStatsChart = new Chart(programCtx, {
+        type: 'bar',
+        data: {
+            labels: continentOrder,
+            datasets: [{
+                label: 'Programs',
+                data: programs,
+                backgroundColor: '#0d6efd'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: context => `${context.parsed.y} programs`
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
+                }
+            }
+        }
+    });
+
+    masterStatsChart = new Chart(masterCtx, {
+        type: 'bar',
+        data: {
+            labels: continentOrder,
+            datasets: [{
+                label: 'Master Programs',
+                data: masters,
+                backgroundColor: '#fd7e14'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: context => `${context.parsed.y} master programs`
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
+                }
+            }
+        }
+    });
+}
+
 function applyFilters() {
     const region = document.getElementById('regionFilter').value;
     const bachelor = document.getElementById('bachelorCheck').checked;
@@ -3614,6 +3794,11 @@ function updateStatistics(data) {
 
 document.addEventListener('DOMContentLoaded', function() {
     initMap();
+
+    const informationModal = document.getElementById('informationModal');
+    if (informationModal) {
+        informationModal.addEventListener('shown.bs.modal', renderInformationCharts);
+    }
 });
     </script>
 </body>
