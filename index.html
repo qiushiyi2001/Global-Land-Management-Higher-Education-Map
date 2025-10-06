@@ -1,0 +1,3912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #map {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+        }
+
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 350px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .filter-panel {
+            position: absolute;
+            top: 10px;
+            left: 60px;
+            width: 260px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            padding: 15px;
+        }
+
+        .statistics-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 60px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            padding: 15px;
+        }
+
+        .custom-popup {
+            max-width: 300px;
+        }
+
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            right: 10px;
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-height: 300px;
+            overflow-y: auto;
+            min-width: 150px;
+        }
+
+        .program-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            margin: 2px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .badge-bachelor { background-color: #28a745; color: white; }
+        .badge-master { background-color: #007bff; color: white; }
+
+        .page-title-banner {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            z-index: 1100;
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .info-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 900;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 260px;
+        }
+
+        .search-box {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #007bff;
+            border-radius: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .country-circle {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .country-circle:hover {
+            stroke-width: 4 !important;
+        }
+
+        .country-label {
+            font-weight: bold;
+            font-size: 14px;
+            text-anchor: middle;
+            cursor: pointer;
+        }
+
+        .country-label .country-count {
+            color: #0b2d6f;
+            -webkit-text-stroke: 1px #ffffff;
+            text-shadow: 0 0 2px rgba(255,255,255,0.9);
+            font-size: 18px;
+            font-weight: 900;
+            margin-left: 6px;
+        }
+
+        .continent-circle {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .continent-circle:hover {
+            fill-opacity: 0.8 !important;
+            stroke-width: 4 !important;
+        }
+
+        .continent-label {
+            font-weight: bold;
+            font-size: 16px;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        .zoom-info {
+            position: absolute;
+            top: 60px;
+            right: 10px;
+            background: rgba(255,255,255,0.9);
+            padding: 8px 12px;
+            border-radius: 5px;
+            z-index: 1000;
+            font-size: 12px;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 10px rgba(255,0,0,0.5);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(255,0,0,1);
+                transform: scale(1.1);
+            }
+            100% {
+                box-shadow: 0 0 10px rgba(255,0,0,0.5);
+                transform: scale(1);
+            }
+        }
+
+        .program-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            min-height: 30px;
+        }
+
+        .program-info-left {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+
+        .program-info-right {
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 4px 0;
+            font-size: 13px;
+        }
+
+        .legend-color-circle {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            margin-right: 8px;
+            border: 1px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- web elements -->
+
+    <div class="page-title-banner">Global Land Management Higher Education Map</div>
+    <button type="button" class="btn btn-info btn-sm info-button" data-bs-toggle="modal" data-bs-target="#informationModal">
+        Map Information
+    </button>
+
+    <div id="map"></div>
+
+    <div class="zoom-info">
+        <span id="zoomLevel">Zoom: 2</span> |
+        <span id="viewMode">View: Continent Statistics</span>
+    </div>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Search university or country..." onkeyup="searchLocation()">
+    </div>
+
+    <div class="filter-panel">
+        <h5 class="mb-3"> Global Filters</h5>
+
+        <div class="mb-3">
+            <label class="form-label"><strong>Region</strong></label>
+            <select class="form-select form-select-sm" id="regionFilter">
+                <option value="all">All Regions</option>
+                <option value="europe">Europe</option>
+                <option value="asia">Asia</option>
+                <option value="africa">Africa</option>
+                <option value="northamerica">North America</option>
+                <option value="southamerica">South America</option>
+                <option value="oceania">Oceania</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label"><strong>Program Level</strong></label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="bachelor" id="bachelorCheck" checked>
+                <label class="form-check-label" for="bachelorCheck">
+                    <span class="program-badge badge-bachelor">Bachelor</span>
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="master" id="masterCheck" checked>
+                <label class="form-check-label" for="masterCheck">
+                    <span class="program-badge badge-master">Master</span>
+                </label>
+            </div>
+        </div>
+
+        <button class="btn btn-primary btn-sm w-100" onclick="applyFilters()">Apply Filters</button>
+        <button class="btn btn-secondary btn-sm w-100 mt-2" onclick="resetFilters()">Reset</button>
+    </div>
+
+    <div class="statistics-panel">
+        <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#quickStatisticsModal">
+            Quick Statistics
+        </button>
+        <div class="row mt-3">
+            <div class="col-4 text-center">
+                <div class="fw-bold text-primary" id="totalPrograms">0</div>
+                <small>Programs</small>
+            </div>
+            <div class="col-4 text-center">
+                <div class="fw-bold text-success" id="totalUniversities">0</div>
+                <small>Universities</small>
+            </div>
+            <div class="col-4 text-center">
+                <div class="fw-bold text-warning" id="totalCountries">0</div>
+                <small>Countries</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="legend">
+        <h6>Legend</h6>
+        <div id="legendContent">
+
+        </div>
+    </div>
+
+    <div class="info-panel" id="infoPanel" style="display:none;">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0" id="panelTitle">Information</h5>
+                <button type="button" class="btn-close btn-close-white float-end" onclick="closeInfoPanel()"></button>
+            </div>
+            <div class="card-body" id="panelContent">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="informationModal" tabindex="-1" aria-labelledby="informationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="informationModalLabel">Information Center</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="siteInfoSection">
+                        <h6>Site Information</h6>
+                        <div id="siteInfoContent" class="mt-3"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="quickStatisticsModal" tabindex="-1" aria-labelledby="quickStatisticsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="quickStatisticsModalLabel">Quick Statistics</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-4">
+                        <h6>Overview</h6>
+                        <div class="chart-container">
+                            <canvas id="totalsOverviewChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <h6>Program Levels</h6>
+                        <div class="chart-container">
+                            <canvas id="programLevelChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h6>Programs by Continent</h6>
+                        <div class="chart-container">
+                            <canvas id="continentProgramChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<script>
+    // database section
+    const landManagementPrograms = [
+
+        {
+            id: 1000,
+            university: "Technical University of Munich",
+            universityNative: "Technische Universität München",
+            country: "Germany",
+            city: "Munich",
+            lat: 48.1351,
+            lng: 11.5820,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Land Management (partial degree)", duration: 3},
+                {level: "master", name: "Land Management and Geospatial Science", duration: 2}
+            ],
+            website: "https://www.tum.de",
+            established: 1868
+        },
+
+        {
+            id: 1001,
+            university: "Anhalt University of Applied Sciences",
+            universityNative: "Hochschule Anhalt",
+            country: "Germany",
+            city: "Bernburg",
+            lat: 51.7990,
+            lng: 11.7364,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Sustainable Land Management and Conservation", duration: 2}
+            ],
+            website: "https://www.hs-anhalt.de",
+            established: 1991
+        },
+
+        {
+            id: 1010,
+            university: "Wageningen University & Research",
+            universityNative: "Universiteit Wageningen",
+            country: "Netherlands",
+            city: "Wageningen",
+            lat: 51.9856,
+            lng: 5.6639,
+            region: "europe",
+            programs: [
+                {level: "master", name: "International Land and Water Management", duration: 2}
+            ],
+            website: "https://www.wur.nl",
+            established: 1918
+        },
+        {
+            id: 1011,
+            university: "University of Twente",
+            universityNative: "Universiteit Twente",
+            country: "Netherlands",
+            city: "Enschede",
+            lat: 52.2396,
+            lng: 6.8497,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Track:Urban and Land Futures (Geo-Information Science and Earth Observation)", duration: 2}
+            ],
+            website: "https://www.utwente.nl",
+            established: 1961
+        },
+        {
+            id: 1012,
+            university: "Erasmus University Rotterdam",
+            universityNative: "Erasmus Universiteit Rotterdam",
+            country: "Netherlands",
+            city: "Rotterdam",
+            lat: 51.9172,
+            lng: 4.5296,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Urban Housing and Land Justice: Equitable Access to Sustainable Land, Housing & Services", duration: 1}
+            ],
+            website: "https://www.eur.nl",
+            established: 1913
+        },
+        {
+            id: 1013,
+            university: "Radboud University",
+            universityNative: "Radboud Universiteit",
+            country: "Netherlands",
+            city: "Nijmegen",
+            lat: 51.8229,
+            lng: 5.8641,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Spatial Planning - Planning, Land and Real Estate Development", duration: 1}
+            ],
+            website: "https://www.ru.nl",
+            established: 1923
+        },
+
+        {
+            id: 1020,
+            university: "Aalborg University",
+            universityNative: "Aalborg Universitet",
+            country: "Denmark",
+            city: "Aalborg",
+            lat: 57.0488,
+            lng: 9.9217,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Surveying, Planning and Land Management", duration: 3},
+                {level: "master", name: "Surveying, Planning and Land Management", duration: 2}
+            ],
+            website: "https://www.aau.dk",
+            established: 1974
+        },
+
+        {
+            id: 1030,
+            university: "Ghent University",
+            universityNative: "Universiteit Gent",
+            country: "Belgium",
+            city: "Ghent",
+            lat: 51.0543,
+            lng: 3.7174,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Sustainable Land Management", duration: 2}
+            ],
+            website: "https://www.ugent.be",
+            established: 1817
+        },
+        {
+            id: 1031,
+            university: "Free University of Brussels",
+            universityNative: "Vrije Universiteit Brussel",
+            country: "Belgium",
+            city: "Etterbeek",
+            lat: 50.8223,
+            lng: 4.3949,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Sustainable Land Management", duration: 2}
+            ],
+            website: "https://www.vub.be",
+            established: 1970
+        },
+
+        {
+            id: 1040,
+            university: "Paris-Saclay University",
+            universityNative: "Université Paris-Saclay",
+            country: "France",
+            city: "Gif-sur-Yvette",
+            lat: 48.7094,
+            lng: 2.1712,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land Management and Community Development", duration: 2}
+            ],
+            website: "https://www.universite-paris-saclay.fr",
+            established: 2020
+        },
+
+        {
+            id: 1050,
+            university: "University of Granada",
+            universityNative: "Universidad de Granada",
+            country: "Spain",
+            city: "Granada",
+            lat: 37.1773,
+            lng: -3.5986,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Geography and Land Management", duration: 4}
+            ],
+            website: "https://www.ugr.es",
+            established: 1531
+        },
+        {
+            id: 1051,
+            university: "University of the Basque Country",
+            universityNative: "Universidad del País Vasco",
+            country: "Spain",
+            city: "Leioa",
+            lat: 43.3317,
+            lng: -2.9099,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Geography and Land Management", duration: 4}
+            ],
+            website: "https://www.ehu.eus",
+            established: 1980
+        },
+        {
+            id: 1052,
+            university: "University of Santiago de Compostela",
+            universityNative: "Universidade de Santiago de Compostela",
+            country: "Spain",
+            city: "Santiago de Compostela",
+            lat: 42.8805,
+            lng: -8.5447,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Geography and Land Management", duration: 4}
+            ],
+            website: "https://www.usc.es",
+            established: 1495
+        },
+        {
+            id: 1053,
+            university: "Complutense University of Madrid",
+            universityNative: "Universidad Complutense de Madrid",
+            country: "Spain",
+            city: "Madrid",
+            lat: 40.4497,
+            lng: -3.7317,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Geography and Land Management", duration: 4}
+            ],
+            website: "https://www.ucm.es",
+            established: 1499
+        },
+        {
+            id: 1054,
+            university: "University of León",
+            universityNative: "Universidad de León",
+            country: "Spain",
+            city: "León",
+            lat: 42.6055,
+            lng: -5.5713,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Geography and Land Management", duration: 4}
+            ],
+            website: "https://www.unileon.es",
+            established: 1979
+        },
+        {
+            id: 1055,
+            university: "Autonomous University of Madrid",
+            universityNative: "Universidad Autónoma de Madrid",
+            country: "Spain",
+            city: "Madrid",
+            lat: 40.5447,
+            lng: -3.6906,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Geography and Land Management", duration: 4}
+            ],
+            website: "https://www.uam.es",
+            established: 1968
+        },
+
+        {
+            id: 1060,
+            university: "Istanbul Technical University",
+            universityNative: "İstanbul Teknik Üniversitesi",
+            country: "Turkey",
+            city: "Istanbul",
+            lat: 41.1055,
+            lng: 29.0249,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land Management", duration: 2}
+            ],
+            website: "https://web.itu.edu.tr",
+            established: 1773
+        },
+        {
+            id: 1061,
+            university: "Mersin University",
+            universityNative: "Mersin Üniversitesi",
+            country: "Turkey",
+            city: "Mersin",
+            lat: 36.8121,
+            lng: 34.6415,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land Management, Real Estate Appraisal and Development (Interdisciplinary)", duration: 2}
+            ],
+            website: "https://www.mersin.edu.tr",
+            established: 1992
+        },
+
+        {
+            id: 1070,
+            university: "University of Bologna",
+            universityNative: "Università di Bologna",
+            country: "Italy",
+            city: "Bologna",
+            lat: 44.4949,
+            lng: 11.3426,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Land and Agro-forestry Technologies", duration: 3}
+            ],
+            website: "https://www.unibo.it",
+            established: 1088
+        },
+        {
+            id: 1071,
+            university: "University of Rome La Sapienza",
+            universityNative: "Sapienza Università di Roma",
+            country: "Italy",
+            city: "Rome",
+            lat: 41.9028,
+            lng: 12.4964,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Engineering Geology, Land Use Management and Georisks", duration: 2},
+                {level: "master", name: "Land and Environmental Engineering", duration: 2}
+            ],
+            website: "https://www.uniroma1.it",
+            established: 1303
+        },
+        {
+            id: 1072,
+            university: "Technical University of Milan",
+            universityNative: "Politecnico di Milano",
+            country: "Italy",
+            city: "Milan",
+            lat: 45.4642,
+            lng: 9.1900,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Environmental and Land Planning Engineering", duration: 3},
+                {level: "master", name: "Land and Environmental Engineering", duration: 2}
+            ],
+            website: "https://www.polimi.it",
+            established: 1863
+        },
+        {
+            id: 1073,
+            university: "University of Milan-Bicocca",
+            universityNative: "Università degli Studi di Milano-Bicocca",
+            country: "Italy",
+            city: "Milan",
+            lat: 45.5145,
+            lng: 9.2122,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land and Environment Science and Technology", duration: 2}
+            ],
+            website: "https://www.unimib.it",
+            established: 1998
+        },
+        {
+            id: 1074,
+            university: "University of Padua",
+            universityNative: "Università degli Studi di Padova",
+            country: "Italy",
+            city: "Padua",
+            lat: 45.4064,
+            lng: 11.8768,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land and Environment Science and Technology", duration: 2}
+            ],
+            website: "https://www.unipd.it",
+            established: 1222
+        },
+        {
+            id: 1075,
+            university: "University of Naples Federico II",
+            universityNative: "Università degli Studi di Napoli Federico II",
+            country: "Italy",
+            city: "Naples",
+            lat: 40.8518,
+            lng: 14.2681,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land and Environmental Engineering", duration: 2}
+            ],
+            website: "https://www.unina.it",
+            established: 1224
+        },
+        {
+            id: 1076,
+            university: "University of Pavia",
+            universityNative: "Università degli Studi di Pavia",
+            country: "Italy",
+            city: "Pavia",
+            lat: 45.1853,
+            lng: 9.1566,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land and Environmental Engineering", duration: 2}
+            ],
+            website: "https://www.unipv.it",
+            established: 1361
+        },
+        {
+            id: 1077,
+            university: "University of Trento",
+            universityNative: "Università degli Studi di Trento",
+            country: "Italy",
+            city: "Trento",
+            lat: 46.0664,
+            lng: 11.1257,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land and Environmental Engineering", duration: 2}
+            ],
+            website: "https://www.unitn.it",
+            established: 1962
+        },
+        {
+            id: 1078,
+            university: "University of Catania",
+            universityNative: "Università degli Studi di Catania",
+            country: "Italy",
+            city: "Catania",
+            lat: 37.5079,
+            lng: 15.0830,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Environmental Sustainability and Land Management", duration: 3},
+                {level: "master", name: "Land and Environmental Engineering", duration: 2}
+            ],
+            website: "https://www.unict.it",
+            established: 1434
+        },
+        {
+            id: 1079,
+            university: "University of Perugia",
+            universityNative: "Università degli Studi di Perugia",
+            country: "Italy",
+            city: "Perugia",
+            lat: 43.1107,
+            lng: 12.3908,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land and Environmental Engineering", duration: 2}
+            ],
+            website: "https://www.unipg.it",
+            established: 1308
+        },
+
+        {
+            id: 1080,
+            university: "Lithuanian College of Engineering",
+            universityNative: "Lietuvos inžinerijos kolegija",
+            country: "Lithuania",
+            city: "Vilnius",
+            lat: 54.6872,
+            lng: 25.2797,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Land Use Planning and Management", duration: 4}
+            ],
+            website: "https://www.lik.lt",
+            established: 2000
+        },
+        {
+            id: 1081,
+            university: "Vytautas Magnus University Agriculture Academy",
+            universityNative: "VDU Žemės ūkio akademija",
+            country: "Lithuania",
+            city: "Kaunas",
+            lat: 54.8914,
+            lng: 23.9322,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Land Use Planning", duration: 4}
+            ],
+            website: "https://www.vdu.lt",
+            established: 1922
+        },
+        {
+            id: 1082,
+            university: "Kaunas Forestry and Environmental Engineering University of Applied Sciences",
+            universityNative: "Kauno miškų ir aplinkos inžinerijos kolegija",
+            country: "Lithuania",
+            city: "Girionys",
+            lat: 54.8385,
+            lng: 24.0329,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Land Management", duration: 3}
+            ],
+            website: "https://www.kmaik.lt",
+            established: 1920
+        },
+
+        {
+            id: 1090,
+            university: "Lviv Polytechnic National University",
+            universityNative: "Національний університет Львівська політехніка",
+            country: "Ukraine",
+            city: "Lviv",
+            lat: 49.8397,
+            lng: 24.0297,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Geodesy and Land Management", duration: 4}
+            ],
+            website: "https://lpnu.ua",
+            established: 1844
+        },
+        {
+            id: 1091,
+            university: "Kyiv Aviation Institute",
+            universityNative: "Національний авіаційний університет",
+            country: "Ukraine",
+            city: "Kyiv",
+            lat: 50.4398,
+            lng: 30.4281,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land Management and Cadastre", duration: 1.5}
+            ],
+            website: "https://nau.edu.ua",
+            established: 1933
+        },
+
+        {
+            id: 1100,
+            university: "SSUGT",
+            universityNative: "СГУГиТ",
+            country: "Russia",
+            city: "Novosibirsk",
+            lat: 55.0084,
+            lng: 82.9357,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land Management and Cadastre", duration: 1.5}
+            ],
+            website: "https://sgugit.ru",
+            established: 1933
+        },
+        {
+            id: 1101,
+            university: "Saint Petersburg State University of Architecture and Civil Engineering",
+            universityNative: "Санкт-Петербургский государственный архитектурно-строительный университет",
+            country: "Russia",
+            city: "Saint Petersburg",
+            lat: 59.9311,
+            lng: 30.3609,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Urban Cadastre", duration: 4},
+                {level: "master", name: "Real Estate Cadastre of Urbanized Territories", duration: 2}
+            ],
+            website: "https://www.spbgasu.ru",
+            established: 1832
+        },
+        {
+            id: 1102,
+            university: "State University of Land Use Planning",
+            universityNative: "Государственный университет по землеустройству",
+            country: "Russia",
+            city: "Moscow",
+            lat: 55.7558,
+            lng: 37.6173,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Land Management and Cadastres", duration: 4},
+                {level: "master", name: "Land Management and Cadastres", duration: 2}
+            ],
+            website: "https://www.guz.ru",
+            established: 1779
+        },
+        {
+            id: 1103,
+            university: "RUDN University",
+            universityNative: "Российский университет дружбы народов",
+            country: "Russia",
+            city: "Moscow",
+            lat: 55.6502,
+            lng: 37.6685,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Land Management and Cadastres", duration: 4},
+                {level: "master", name: "Land Management and Cadastres", duration: 2}
+            ],
+            website: "https://www.rudn.ru",
+            established: 1960
+        },
+        {
+            id: 1104,
+            university: "Kazan Federal University",
+            universityNative: "Казанский федеральный университет",
+            country: "Russia",
+            city: "Kazan",
+            lat: 55.7887,
+            lng: 49.1221,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Land Development and Land Registry", duration: 4},
+                {level: "master", name: "Land Development and Land Registry", duration: 2}
+            ],
+            website: "https://kpfu.ru",
+            established: 1804
+        },
+        {
+            id: 1105,
+            university: "Tomsk Polytechnic University",
+            universityNative: "Томский политехнический университет",
+            country: "Russia",
+            city: "Tomsk",
+            lat: 56.4985,
+            lng: 84.9714,
+            region: "asia",
+            programs: [
+                {level: "master", name: "Cadastre and Land Management", duration: 2}
+            ],
+            website: "https://tpu.ru",
+            established: 1896
+        },
+        {
+            id: 1106,
+            university: "Saint Petersburg State University",
+            universityNative: "Санкт-Петербургский государственный университет",
+            country: "Russia",
+            city: "Saint Petersburg",
+            lat: 59.9386,
+            lng: 30.3141,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Management of Real Estate Objects and Development of Territories", duration: 2}
+            ],
+            website: "https://spbu.ru",
+            established: 1724
+        },
+
+        {
+            id: 1110,
+            university: "Belarusian State Agricultural Academy",
+            universityNative: "Белорусская государственная сельскохозяйственная академия",
+            country: "Belarus",
+            city: "Gorki",
+            lat: 54.2858,
+            lng: 30.9952,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Land Management", duration: 5},
+                {level: "bachelor", name: "Land Cadastre", duration: 5}
+            ],
+            website: "https://baa.by",
+            established: 1840
+        },
+        {
+            id: 1111,
+            university: "Polotsk State University",
+            universityNative: "Полоцкий государственный университет",
+            country: "Belarus",
+            city: "Novopolotsk",
+            lat: 55.4879,
+            lng: 28.7856,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Land Cadastre", duration: 5}
+            ],
+            website: "https://www.psu.by",
+            established: 1968
+        },
+
+        {
+            id: 1120,
+            university: "South East Technological University",
+            universityNative: "South East Technological University",
+            country: "Ireland",
+            city: "Waterford",
+            lat: 52.2593,
+            lng: -7.1101,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Land Management in Agriculture (Additional Degree)", duration: 1}
+            ],
+            website: "https://www.setu.ie",
+            established: 2022
+        },
+
+        {
+            id: 1130,
+            university: "Estonian University of Life Sciences",
+            universityNative: "Eesti Maaülikool",
+            country: "Estonia",
+            city: "Tartu",
+            lat: 58.3829,
+            lng: 26.6982,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Land Surveying, Property and Land Management", duration: 3},
+                {level: "master", name: "Land Surveying, Property and Land Management", duration: 2}
+            ],
+            website: "https://www.emu.ee",
+            established: 1951
+        },
+
+        {
+            id: 1140,
+            university: "Technical University of Moldova",
+            universityNative: "Universitatea Tehnică a Moldovei",
+            country: "Moldova",
+            city: "Chisinau",
+            lat: 47.0105,
+            lng: 28.8638,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Real Estate and Cadastral Law", duration: 2}
+            ],
+            website: "https://utm.md",
+            established: 1964
+        },
+
+        {
+            id: 1150,
+            university: "Uppsala University",
+            universityNative: "Uppsala universitet",
+            country: "Sweden",
+            city: "Uppsala",
+            lat: 59.8586,
+            lng: 17.6389,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Land Management", duration: 3}
+            ],
+            website: "https://www.uu.se",
+            established: 1477
+        },
+        {
+            id: 1151,
+            university: "Lund University",
+            universityNative: "Lunds universitet",
+            country: "Sweden",
+            city: "Lund",
+            lat: 55.7047,
+            lng: 13.1910,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land Surveying", duration: 2}
+            ],
+            website: "https://www.lu.se",
+            established: 1666
+        },
+
+        {
+            id: 1170,
+            university: "University of Belgrade",
+            universityNative: "Универзитет у Београду",
+            country: "Serbia",
+            city: "Belgrade",
+            lat: 44.8176,
+            lng: 20.4633,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land Law and Economy", duration: 2}
+            ],
+            website: "https://www.bg.ac.rs",
+            established: 1808
+        },
+
+        {
+            id: 1180,
+            university: "Czech University of Life Sciences Prague",
+            universityNative: "Česká zemědělská univerzita v Praze",
+            country: "Czech Republic",
+            city: "Prague",
+            lat: 50.1279,
+            lng: 14.3727,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land and Water Management", duration: 2}
+            ],
+            website: "https://www.czu.cz",
+            established: 1906
+        },
+
+        {
+            id: 1190,
+            university: "Óbuda University",
+            universityNative: "Óbudai Egyetem",
+            country: "Hungary",
+            city: "Budapest",
+            lat: 47.5288,
+            lng: 19.0526,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Land Surveying and Land Management Engineering", duration: 3.5}
+            ],
+            website: "https://www.uni-obuda.hu",
+            established: 2010
+        },
+
+        {
+            id: 1200,
+            university: "Bangor University",
+            universityNative: "Prifysgol Bangor",
+            country: "United Kingdom",
+            city: "Bangor",
+            lat: 53.2274,
+            lng: -4.1293,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Conservation and Land Management", duration: 1}
+            ],
+            website: "https://www.bangor.ac.uk",
+            established: 1884
+        },
+        {
+            id: 1201,
+            university: "University of Edinburgh",
+            universityNative: "University of Edinburgh",
+            country: "United Kingdom",
+            city: "Edinburgh",
+            lat: 55.9444,
+            lng: -3.1892,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Sustainable Lands and Cities", duration: 1}
+            ],
+            website: "https://www.ed.ac.uk",
+            established: 1583
+        },
+        {
+            id: 1202,
+            university: "Harper Adams University",
+            universityNative: "Harper Adams University",
+            country: "United Kingdom",
+            city: "Newport",
+            lat: 52.7794,
+            lng: -2.4266,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land & Property Management", duration: 1},
+                {level: "master", name: "Rural Estate and Land Management", duration: 1}
+            ],
+            website: "https://www.harper-adams.ac.uk",
+            established: 1901
+        },
+        {
+            id: 1203,
+            university: "Royal Agricultural University",
+            universityNative: "Royal Agricultural University",
+            country: "United Kingdom",
+            city: "Cirencester",
+            lat: 51.7112,
+            lng: -1.9986,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Rural Land Management", duration: 3}
+            ],
+            website: "https://www.rau.ac.uk",
+            established: 1845
+        },
+        {
+            id: 1204,
+            university: "University of Reading",
+            universityNative: "University of Reading",
+            country: "United Kingdom",
+            city: "Reading",
+            lat: 51.4414,
+            lng: -0.9418,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Sustainable Land Management", duration: 3}
+            ],
+            website: "https://www.reading.ac.uk",
+            established: 1892
+        },
+        {
+            id: 1205,
+            university: "University of Cambridge",
+            universityNative: "University of Cambridge",
+            country: "United Kingdom",
+            city: "Cambridge",
+            lat: 52.2043,
+            lng: 0.1218,
+            region: "europe",
+            programs: [
+                {level: "bachelor", name: "Land Economy", duration: 3},
+                {level: "master", name: "Land Economy", duration: 1}
+            ],
+            website: "https://www.cam.ac.uk",
+            established: 1209
+        },
+
+        {
+            id: 1210,
+            university: "University of West Attica",
+            universityNative: "Πανεπιστήμιο Δυτικής Αττικής",
+            country: "Greece",
+            city: "Athens",
+            lat: 38.0006,
+            lng: 23.6752,
+            region: "europe",
+            programs: [
+                {level: "master", name: "Land Management & Real Estate", duration: 2}
+            ],
+            website: "https://www.uniwa.gr",
+            established: 2018
+        },
+        {
+    id: 1300,
+    university: "Poznan University of Life Sciences",
+    universityNative: "Uniwersytet Przyrodniczy w Poznaniu",
+    country: "Poland",
+    city: "Poznań",
+    lat: 52.4064,
+    lng: 16.9252,
+    region: "europe",
+    programs: [
+        {level: "bachelor", name: "Land Resource Management", duration: 4}
+    ],
+    website: "https://www.up.poznan.pl",
+    established: 1951
+},
+
+        {
+            id: 2000,
+            university: "Nanjing Agricultural University",
+            universityNative: "Nanjing Agricultural University",
+            country: "China",
+            city: "Nanjing",
+            lat: 32.0603,
+            lng: 118.7969,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.njau.edu.cn",
+            established: 1902
+        },
+        {
+            id: 2001,
+            university: "China University of Geosciences (Wuhan)",
+            universityNative: "China University of Geosciences (Wuhan)",
+            country: "China",
+            city: "Wuhan",
+            lat: 30.525,
+            lng: 114.395,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.cug.edu.cn",
+            established: 1952
+        },
+        {
+            id: 2002,
+            university: "Renmin University of China",
+            universityNative: "Renmin University of China",
+            country: "China",
+            city: "Beijing",
+            lat: 39.9691,
+            lng: 116.3145,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.ruc.edu.cn",
+            established: 1950
+        },
+        {
+            id: 2003,
+            university: "Zhejiang University",
+            universityNative: "Zhejiang University",
+            country: "China",
+            city: "Hangzhou",
+            lat: 30.3053,
+            lng: 120.0916,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.zju.edu.cn",
+            established: 1897
+        },
+        {
+            id: 2004,
+            university: "Nanjing University",
+            universityNative: "Nanjing University",
+            country: "China",
+            city: "Nanjing",
+            lat: 32.0566,
+            lng: 118.7789,
+            region: "asia",
+            programs: [
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.nju.edu.cn",
+            established: 1902
+        },
+        {
+            id: 2005,
+            university: "Wuhan University",
+            universityNative: "Wuhan University",
+            country: "China",
+            city: "Wuhan",
+            lat: 30.5365,
+            lng: 114.3643,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.whu.edu.cn",
+            established: 1893
+        },
+        {
+            id: 2006,
+            university: "Huazhong University of Science and Technology",
+            universityNative: "Huazhong University of Science and Technology",
+            country: "China",
+            city: "Wuhan",
+            lat: 30.5130,
+            lng: 114.4202,
+            region: "asia",
+            programs: [
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.hust.edu.cn",
+            established: 1953
+        },
+        {
+            id: 2007,
+            university: "Sichuan University",
+            universityNative: "Sichuan University",
+            country: "China",
+            city: "Chengdu",
+            lat: 30.6253,
+            lng: 104.0830,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.scu.edu.cn",
+            established: 1896
+        },
+        {
+            id: 2008,
+            university: "Beijing Normal University",
+            universityNative: "Beijing Normal University",
+            country: "China",
+            city: "Beijing",
+            lat: 39.9619,
+            lng: 116.3662,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.bnu.edu.cn",
+            established: 1902
+        },
+        {
+            id: 2009,
+            university: "China Agricultural University",
+            universityNative: "China Agricultural University",
+            country: "China",
+            city: "Beijing",
+            lat: 40.0025,
+            lng: 116.3563,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.cau.edu.cn",
+            established: 1905
+        },
+        {
+            id: 2010,
+            university: "Jilin University",
+            universityNative: "Jilin University",
+            country: "China",
+            city: "Changchun",
+            lat: 43.8256,
+            lng: 125.2848,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.jlu.edu.cn",
+            established: 1946
+        },
+        {
+            id: 2011,
+            university: "Northeastern University",
+            universityNative: "Northeastern University (China)",
+            country: "China",
+            city: "Shenyang",
+            lat: 41.7658,
+            lng: 123.4196,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.neu.edu.cn",
+            established: 1923
+        },
+        {
+            id: 2012,
+            university: "Lanzhou University",
+            universityNative: "Lanzhou University",
+            country: "China",
+            city: "Lanzhou",
+            lat: 36.0461,
+            lng: 103.8593,
+            region: "asia",
+            programs: [
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.lzu.edu.cn",
+            established: 1909
+        },
+        {
+            id: 2013,
+            university: "Northwest A&F University",
+            universityNative: "Northwest A&F University",
+            country: "China",
+            city: "Yangling",
+            lat: 34.2658,
+            lng: 108.0729,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.nwafu.edu.cn",
+            established: 1934
+        },
+        {
+            id: 2014,
+            university: "Ocean University of China",
+            universityNative: "Ocean University of China",
+            country: "China",
+            city: "Qingdao",
+            lat: 36.0621,
+            lng: 120.329,
+            region: "asia",
+            programs: [
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.ouc.edu.cn",
+            established: 1924
+        },
+        {
+            id: 2015,
+            university: "China University of Mining and Technology",
+            universityNative: "China University of Mining and Technology",
+            country: "China",
+            city: "Xuzhou",
+            lat: 34.2205,
+            lng: 117.1417,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.cumt.edu.cn",
+            established: 1909
+        },
+        {
+            id: 2016,
+            university: "Hohai University",
+            universityNative: "Hohai University",
+            country: "China",
+            city: "Nanjing",
+            lat: 32.059,
+            lng: 118.769,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.hhu.edu.cn",
+            established: 1915
+        },
+        {
+            id: 2017,
+            university: "Sichuan Agricultural University",
+            universityNative: "Sichuan Agricultural University",
+            country: "China",
+            city: "Ya'an",
+            lat: 29.9824,
+            lng: 103.0018,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.sicau.edu.cn",
+            established: 1906
+        },
+        {
+            id: 2018,
+            university: "Southwest University",
+            universityNative: "Southwest University",
+            country: "China",
+            city: "Chongqing",
+            lat: 29.8133,
+            lng: 106.4286,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.swu.edu.cn",
+            established: 1906
+        },
+        {
+            id: 2019,
+            university: "Chang'an University",
+            universityNative: "Chang'an University",
+            country: "China",
+            city: "Xi'an",
+            lat: 34.2273,
+            lng: 108.9632,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.chd.edu.cn",
+            established: 1951
+        },
+        {
+            id: 2020,
+            university: "Huazhong Agricultural University",
+            universityNative: "Huazhong Agricultural University",
+            country: "China",
+            city: "Wuhan",
+            lat: 30.4749,
+            lng: 114.3555,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.hzau.edu.cn",
+            established: 1898
+        },
+        {
+            id: 2021,
+            university: "Northeast Agricultural University",
+            universityNative: "Northeast Agricultural University",
+            country: "China",
+            city: "Harbin",
+            lat: 45.7446,
+            lng: 126.7263,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.neau.edu.cn",
+            established: 1948
+        },
+        {
+            id: 2022,
+            university: "China University of Geosciences (Beijing)",
+            universityNative: "China University of Geosciences (Beijing)",
+            country: "China",
+            city: "Beijing",
+            lat: 40.000,
+            lng: 116.3407,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Resource Management", duration: 3}
+            ],
+            website: "https://www.cugb.edu.cn",
+            established: 1952
+        },
+
+        {
+            id: 2100,
+            university: "IPB University",
+            universityNative: "Institut Pertanian Bogor",
+            country: "Indonesia",
+            city: "Bogor",
+            lat: -6.5576,
+            lng: 106.7246,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4}
+            ],
+            website: "https://www.ipb.ac.id",
+            established: 1963
+        },
+
+        {
+            id: 2110,
+            university: "University Putra Malaysia",
+            universityNative: "Universiti Putra Malaysia",
+            country: "Malaysia",
+            city: "Serdang",
+            lat: 2.9936,
+            lng: 101.7139,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Administration & Development", duration: 4},
+                {level: "master", name: "Land Administration and Development", duration: 2}
+            ],
+            website: "https://www.upm.edu.my",
+            established: 1971
+        },
+        {
+            id: 2111,
+            university: "University Teknologi Malaysia",
+            universityNative: "Universiti Teknologi Malaysia",
+            country: "Malaysia",
+            city: "Johor Bahru",
+            lat: 1.5603,
+            lng: 103.6376,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Administration", duration: 3}
+            ],
+            website: "https://www.utm.my",
+            established: 1972
+        },
+
+        {
+            id: 2120,
+            university: "Visayas State University",
+            universityNative: "Visayas State University",
+            country: "Philippines",
+            city: "Baybay",
+            lat: 10.7482,
+            lng: 124.7948,
+            region: "asia",
+            programs: [
+                {level: "master", name: "Land Administration and Management", duration: 2}
+            ],
+            website: "https://www.vsu.edu.ph",
+            established: 1924
+        },
+        {
+            id: 2121,
+            university: "University of the Philippines Open University",
+            universityNative: "Unibersidad ng Pilipinas Open University",
+            country: "Philippines",
+            city: "Los Baños",
+            lat: 14.1651,
+            lng: 121.2425,
+            region: "asia",
+            programs: [
+                {level: "master", name: "Land Valuation and Management", duration: 2}
+            ],
+            website: "https://www.upou.edu.ph",
+            established: 1995
+        },
+
+        {
+            id: 2130,
+            university: "Royal University of Law and Economics",
+            universityNative: "សាកលវិទ្យាល័យភូមិន្ទនីតិសាស្ត្រ និងវិទ្យាសាស្ត្រសេដ្ឋកិច្ច",
+            country: "Cambodia",
+            city: "Phnom Penh",
+            lat: 11.5709,
+            lng: 104.8980,
+            region: "asia",
+            programs: [
+                {level: "master", name: "Land Law and Real Estate", duration: 2}
+            ],
+            website: "https://www.rule.edu.kh",
+            established: 2003
+        },
+        {
+            id: 2131,
+            university: "Royal University of Agriculture",
+            universityNative: "សាកលវិទ្យាល័យភូមិន្ទកសិកម្ម",
+            country: "Cambodia",
+            city: "Phnom Penh",
+            lat: 11.49,
+            lng: 104.85,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Management and Land Administration", duration: 4}
+            ],
+            website: "https://www.rua.edu.kh",
+            established: 1964
+        },
+
+        {
+            id: 2140,
+            university: "Can Tho University",
+            universityNative: "Đại học Cần Thơ",
+            country: "Vietnam",
+            city: "Can Tho",
+            lat: 10.0299,
+            lng: 105.7685,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Management", duration: 4.5},
+                {level: "master", name: "Land Management", duration: 2}
+            ],
+            website: "https://www.ctu.edu.vn",
+            established: 1966
+        },
+        {
+            id: 2141,
+            university: "Vietnam National University of Agriculture",
+            universityNative: "Học viện Nông nghiệp Việt Nam",
+            country: "Vietnam",
+            city: "Hanoi",
+            lat: 21.0042,
+            lng: 105.9350,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Management", duration: 4},
+                {level: "master", name: "Land Management", duration: 2}
+            ],
+            website: "https://www.vnua.edu.vn",
+            established: 1956
+        },
+        {
+            id: 2142,
+            university: "Nam Can Tho University",
+            universityNative: "Đại học Nam Cần Thơ",
+            country: "Vietnam",
+            city: "Can Tho",
+            lat: 10.0186,
+            lng: 105.7614,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Management", duration: 4},
+                {level: "master", name: "Land Management", duration: 2}
+            ],
+            website: "https://www.nctu.edu.vn",
+            established: 2014
+        },
+        {
+            id: 2143,
+            university: "Hue University",
+            universityNative: "Đại học Huế",
+            country: "Vietnam",
+            city: "Hue",
+            lat: 16.4619,
+            lng: 107.5955,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Management", duration: 4},
+                {level: "master", name: "Land Management", duration: 2}
+            ],
+            website: "https://www.hueuni.edu.vn",
+            established: 1957
+        },
+        {
+            id: 2144,
+            university: "Hue University of Agriculture and Forestry",
+            universityNative: "Đại học Nông Lâm Huế",
+            country: "Vietnam",
+            city: "Hue",
+            lat: 16.45,
+            lng: 107.57,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Management", duration: 4},
+                {level: "master", name: "Land Management", duration: 2}
+            ],
+            website: "https://www.huaf.edu.vn",
+            established: 1967
+        },
+
+        {
+            id: 2150,
+            university: "Jagannath University",
+            universityNative: "জগন্নাথ বিশ্ববিদ্যালয়",
+            country: "Bangladesh",
+            city: "Dhaka",
+            lat: 23.712,
+            lng: 90.4097,
+            region: "asia",
+            programs: [
+                {level: "master", name: "Law (Land Management)", duration: 1}
+            ],
+            website: "https://www.jnu.ac.bd",
+            established: 1858
+        },
+
+        {
+            id: 2160,
+            university: "Kathmandu University",
+            universityNative: "काठमाडौं विश्वविद्यालय",
+            country: "Nepal",
+            city: "Dhulikhel",
+            lat: 27.6192,
+            lng: 85.5387,
+            region: "asia",
+            programs: [
+                {level: "master", name: "Land Administration", duration: 2}
+            ],
+            website: "https://www.ku.edu.np",
+            established: 1991
+        },
+
+        {
+            id: 2170,
+            university: "Almaty University",
+            universityNative: "Алматы университеті",
+            country: "Kazakhstan",
+            city: "Almaty",
+            lat: 43.21,
+            lng: 76.89,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Management", duration: 4}
+            ],
+            website: "https://www.almau.edu.kz",
+            established: 1996
+        },
+        {
+            id: 2171,
+            university: "Kazakh National Research Technical University",
+            universityNative: "Қазақ ұлттық зерттеу техникалық университеті",
+            country: "Kazakhstan",
+            city: "Almaty",
+            lat: 43.2363,
+            lng: 76.9094,
+            region: "asia",
+            programs: [
+                {level: "master", name: "Land Management", duration: 2}
+            ],
+            website: "https://satbayev.university",
+            established: 1934
+        },
+        {
+            id: 2172,
+            university: "Al-Farabi Kazakh National University",
+            universityNative: "Әл-Фараби атындағы Қазақ ұлттық университеті",
+            country: "Kazakhstan",
+            city: "Almaty",
+            lat: 43.21,
+            lng: 76.85,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Management", duration: 4},
+                {level: "master", name: "Land Management", duration: 2}
+            ],
+            website: "https://www.kaznu.kz",
+            established: 1934
+        },
+        {
+            id: 2173,
+            university: "D. Serikbayev East Kazakhstan Technical University",
+            universityNative: "Д. Серікбаев атындағы Шығыс Қазақстан техникалық университеті",
+            country: "Kazakhstan",
+            city: "Ust-Kamenogorsk",
+            lat: 49.9480,
+            lng: 82.6276,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Cadastre and Land Management", duration: 4}
+            ],
+            website: "https://www.ektu.kz",
+            established: 1958
+        },
+
+        {
+            id: 2180,
+            university: "Tashkent State Agrarian University",
+            universityNative: "Toshkent davlat agrar universiteti",
+            country: "Uzbekistan",
+            city: "Tashkent",
+            lat: 41.3462,
+            lng: 69.2044,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Cadastre and Land Management", duration: 4},
+                {level: "master", name: "Use and Management of Land Resources", duration: 2}
+            ],
+            website: "https://www.tdau.uz",
+            established: 1930
+        },
+
+        {
+            id: 2190,
+            university: "Kyrgyz National Agrarian University",
+            universityNative: "Кыргыз улуттук агрардык университети",
+            country: "Kyrgyzstan",
+            city: "Bishkek",
+            lat: 42.8439,
+            lng: 74.5821,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Management and Cadastre", duration: 4},
+                {level: "master", name: "Land Management and Cadastre", duration: 2}
+            ],
+            website: "https://www.knau.kg",
+            established: 1933
+        },
+
+        {
+            id: 2200,
+            university: "Al-Quds University",
+            universityNative: "جامعة القدس",
+            country: "Palestine",
+            city: "Jerusalem",
+            lat: 31.76,
+            lng: 35.26,
+            region: "asia",
+            programs: [
+                {level: "master", name: "Land Management", duration: 2}
+            ],
+            website: "https://www.alquds.edu",
+            established: 1984
+        },
+
+        {
+            id: 2210,
+            university: "Arab American University",
+            universityNative: "الجامعة العربية الأمريكية",
+            country: "Palestine",
+            city: "Jenin",
+            lat: 32.4601,
+            lng: 35.2924,
+            region: "asia",
+            programs: [
+                {level: "master", name: "Land and Real Estate Management", duration: 2}
+            ],
+            website: "https://www.aaup.edu",
+            established: 2000
+        },
+
+        {
+            id: 2220,
+            university: "University of Duhok",
+            universityNative: "زانكۆی دهۆك",
+            country: "Iraq",
+            city: "Duhok",
+            lat: 36.8607,
+            lng: 42.98,
+            region: "asia",
+            programs: [
+                {level: "course", name: "Land Governance", duration: 0.5}
+            ],
+            website: "https://www.uod.ac",
+            established: 1992
+        },
+
+        {
+            id: 2230,
+            university: "University of Jordan",
+            universityNative: "الجامعة الأردنية",
+            country: "Jordan",
+            city: "Amman",
+            lat: 32.0128,
+            lng: 35.8727,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Water and Environment", duration: 4},
+                {level: "master", name: "Land Water and Environment", duration: 2}
+            ],
+            website: "https://www.ju.edu.jo",
+            established: 1962
+        },
+
+        {
+            id: 2240,
+            university: "National Chengchi University",
+            universityNative: "National Chengchi University",
+            country: "Taiwan (Chinese Taiwan)",
+            city: "Taipei",
+            lat: 24.9868,
+            lng: 121.5758,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Management", duration: 4},
+                {level: "bachelor", name: "Land Resource Planning", duration: 4},
+                {level: "master", name: "Land Economics", duration: 2}
+            ],
+            website: "https://www.nccu.edu.tw",
+            established: 1927
+        },
+        {
+            id: 2241,
+            university: "Chang Jung Christian University",
+            universityNative: "Chang Jung Christian University",
+            country: "Taiwan (Chinese Taiwan)",
+            city: "Tainan",
+            lat: 22.9055,
+            lng: 120.2727,
+            region: "asia",
+            programs: [
+                {level: "bachelor", name: "Land Management and Development", duration: 4}
+            ],
+            website: "https://www.cjcu.edu.tw",
+            established: 1993
+        },
+
+        {
+            id: 2250,
+            university: "Cheongju University",
+            universityNative: "청주대학교",
+            country: "South Korea",
+            city: "Cheongju",
+            lat: 36.6372,
+            lng: 127.4897,
+            region: "asia",
+            programs: [
+                {level: "master", name: "Land Management", duration: 2}
+            ],
+            website: "https://www.cju.ac.kr",
+            established: 1947
+        },
+
+        {
+            id: 3001,
+            university: "Kwame Nkrumah University of Science and Technology",
+            universityNative: "Kwame Nkrumah University of Science and Technology",
+            country: "Ghana",
+            city: "Kumasi",
+            lat: 6.6739,
+            lng: -1.5663,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land Economy", duration: 4},
+                {level: "master", name: "Land Governance and Policy", duration: 2}
+            ],
+            website: "https://www.knust.edu.gh",
+            established: 1952
+        },
+        {
+            id: 3011,
+            university: "Makerere University",
+            universityNative: "Makerere University",
+            country: "Uganda",
+            city: "Kampala",
+            lat: 0.3347,
+            lng: 32.5695,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land Economics", duration: 4},
+                {level: "master", name: "Land Management", duration: 2}
+            ],
+            website: "https://www.mak.ac.ug",
+            established: 1922
+        },
+        {
+            id: 3021,
+            university: "Namibia University of Science and Technology",
+            universityNative: "Namibia University of Science and Technology",
+            country: "Namibia",
+            city: "Windhoek",
+            lat: -22.5609,
+            lng: 17.0658,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land Management", duration: 4},
+                {level: "master", name: "Land and Water Management ", duration: 2}
+            ],
+            website: "https://www.nust.na",
+            established: 1994
+        },
+
+        {
+            id: 3030,
+            university: "Alexandria University",
+            universityNative: "جامعة الإسكندرية",
+            country: "Egypt",
+            city: "Alexandria",
+            lat: 31.2016,
+            lng: 29.9113,
+            region: "africa",
+            programs: [
+                {level: "master", name: "Sustainable Land Management", duration: 2}
+            ],
+            website: "https://agr.alexu.edu.eg",
+            established: 1942
+        },
+
+        {
+            id: 3040,
+            university: "Federal University Oye Ekiti",
+            universityNative: "Federal University Oye Ekiti",
+            country: "Nigeria",
+            city: "Oye Ekiti",
+            lat: 7.7983,
+            lng: 5.3173,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Agriculture in Soil Science and Land Resources Management", duration: 5},
+                {level: "master", name: "Soil Science & Land Resources Management", duration: 2}
+            ],
+            website: "http://ssc.fuoye.edu.ng",
+            established: 2011
+        },
+        {
+            id: 3041,
+            university: "University of Benin",
+            universityNative: "University of Benin",
+            country: "Nigeria",
+            city: "Benin City",
+            lat: 6.3350,
+            lng: 5.6037,
+            region: "africa",
+            programs: [
+                {level: "master", name: "Soil Science And Land Management", duration: 2}
+            ],
+            website: "https://www.uniben.edu",
+            established: 1970
+        },
+
+        {
+            id: 3050,
+            university: "Gaston Berger University",
+            universityNative: "Université Gaston Berger",
+            country: "Senegal",
+            city: "Saint-Louis",
+            lat: 16.0326,
+            lng: -16.4853,
+            region: "africa",
+            programs: [
+                {level: "master", name: "Land Governance and Territory Management", duration: 2}
+            ],
+            website: "https://www.ugb.sn",
+            established: 1990
+        },
+
+        {
+            id: 3060,
+            university: "Njala University",
+            universityNative: "Njala University",
+            country: "Sierra Leone",
+            city: "Njala Koryama",
+            lat: 7.9355,
+            lng: -12.0747,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land Resource Management", duration: 4},
+                {level: "master", name: "Land Administration and Management", duration: 1.5}
+            ],
+            website: "https://www.njala.edu.sl",
+            established: 1964
+        },
+
+        {
+            id: 3002,
+            university: "University of Cape Coast",
+            universityNative: "University of Cape Coast",
+            country: "Ghana",
+            city: "Cape Coast",
+            lat: 5.1037,
+            lng: -1.2825,
+            region: "africa",
+            programs: [
+                {level: "master", name: "Land Policy and Administration", duration: 2}
+            ],
+            website: "https://ucc.edu.gh",
+            established: 1962
+        },
+
+        {
+            id: 3070,
+            university: "University of Lomé",
+            universityNative: "Université de Lomé",
+            country: "Togo",
+            city: "Lomé",
+            lat: 6.1764,
+            lng: 1.2119,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Geography - Land Use Planning Specialty", duration: 3}
+            ],
+            website: "https://www.univ-lome.tg",
+            established: 1970
+        },
+
+        {
+            id: 3080,
+            university: "Bahir Dar University",
+            universityNative: "ባሕር ዳር ዩኒቨርሲቲ",
+            country: "Ethiopia",
+            city: "Bahir Dar",
+            lat: 11.5742,
+            lng: 37.3614,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land Administration", duration: 4},
+                {level: "master", name: "Land Administration and Management", duration: 2}
+            ],
+            website: "https://www.bdu.edu.et",
+            established: 2000
+        },
+
+        {
+            id: 3090,
+            university: "Ramaas University",
+            universityNative: "Jaamacadda Ramaas",
+            country: "Somalia",
+            city: "Mogadishu",
+            lat: 2.0469,
+            lng: 45.3182,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land and Water Management", duration: 4}
+            ],
+            website: "https://www.ramaas.edu.so",
+            established: 2013
+        },
+
+        {
+            id: 3100,
+            university: "Malawi University of Business and Applied Sciences",
+            universityNative: "Malawi University of Business and Applied Sciences",
+            country: "Malawi",
+            city: "Blantyre",
+            lat: -15.7860,
+            lng: 35.0058,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land Economy", duration: 4},
+                {level: "bachelor", name: "Land Surveying", duration: 4},
+                {level: "master", name: "Land Governance", duration: 2}
+            ],
+            website: "https://www.mubas.ac.mw",
+            established: 2012
+        },
+
+        {
+            id: 3110,
+            university: "Taniform University",
+            universityNative: "Taniform University",
+            country: "Cameroon",
+            city: "Bamenda",
+            lat: 5.9458,
+            lng: 10.1504,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land & Survey", duration: 3}
+            ],
+            website: "https://www.taniform.org",
+            established: 2015
+        },
+
+        {
+            id: 3120,
+            university: "Kenyatta University",
+            universityNative: "Kenyatta University",
+            country: "Kenya",
+            city: "Nairobi",
+            lat: -1.1832,
+            lng: 36.9318,
+            region: "africa",
+            programs: [
+                {level: "master", name: "Land Water Management", duration: 2}
+            ],
+            website: "https://www.ku.ac.ke",
+            established: 1985
+        },
+        {
+            id: 3121,
+            university: "Technical University of Kenya",
+            universityNative: "Technical University of Kenya",
+            country: "Kenya",
+            city: "Nairobi",
+            lat: -1.2921,
+            lng: 36.8219,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land Administration", duration: 4},
+                {level: "master", name: "Land Administration", duration: 2}
+            ],
+            website: "https://www.tukenya.ac.ke",
+            established: 2013
+        },
+        {
+            id: 3122,
+            university: "University of Nairobi",
+            universityNative: "University of Nairobi",
+            country: "Kenya",
+            city: "Nairobi",
+            lat: -1.2864,
+            lng: 36.8172,
+            region: "africa",
+            programs: [
+                {level: "master", name: "Land and Water Management", duration: 2}
+            ],
+            website: "https://www.uonbi.ac.ke",
+            established: 1956
+        },
+        {
+            id: 3123,
+            university: "Jaramogi Oginga Odinga University of Science and Technology",
+            universityNative: "Jaramogi Oginga Odinga University of Science and Technology",
+            country: "Kenya",
+            city: "Bondo",
+            lat: -0.0863,
+            lng: 34.2700,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land Use and Natural Resources Management", duration: 4}
+            ],
+            website: "https://www.jooust.ac.ke",
+            established: 2011
+        },
+        {
+            id: 3124,
+            university: "Jomo Kenyatta University of Agriculture and Technology",
+            universityNative: "Jomo Kenyatta University of Agriculture and Technology",
+            country: "Kenya",
+            city: "Juja",
+            lat: -1.0915,
+            lng: 37.0117,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land Use and Natural Resources Management", duration: 4},
+                {level: "master", name: "Land Resource Planning and Management", duration: 2}
+            ],
+            website: "https://www.jkuat.ac.ke",
+            established: 1994
+        },
+
+        {
+            id: 3130,
+            university: "INES-Ruhengeri",
+            universityNative: "Institut d'Enseignement Supérieur de Ruhengeri",
+            country: "Rwanda",
+            city: "Ruhengeri",
+            lat: -1.5007,
+            lng: 29.6346,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land Management and Valuation", duration: 4}
+            ],
+            website: "https://www.ines.ac.rw",
+            established: 2003
+        },
+
+        {
+            id: 3140,
+            university: "Ardhi University",
+            universityNative: "Chuo Kikuu cha Ardhi",
+            country: "Tanzania",
+            city: "Dar es Salaam",
+            lat: -6.7924,
+            lng: 39.2083,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land Management and Valuation", duration: 4},
+                {level: "master", name: "Land Administration", duration: 2}
+            ],
+            website: "https://www.aru.ac.tz",
+            established: 2007
+        },
+        {
+            id: 3141,
+            university: "Institute of Rural Development Planning",
+            universityNative: "Taasisi ya Mipango ya Maendeleo ya Vijijini",
+            country: "Tanzania",
+            city: "Dodoma",
+            lat: -6.1730,
+            lng: 35.7516,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land Management and Valuation", duration: 4}
+            ],
+            website: "https://www.irdp.ac.tz",
+            established: 1975
+        },
+
+        {
+            id: 3150,
+            university: "University of Zambia",
+            universityNative: "University of Zambia",
+            country: "Zambia",
+            city: "Lusaka",
+            lat: -15.3875,
+            lng: 28.3228,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Agricultural Sciences (Land Management)", duration: 4},
+                {level: "master", name: "Sustainable Land and Environmental Management", duration: 2}
+            ],
+            website: "https://www.unza.zm",
+            established: 1965
+        },
+
+        {
+            id: 3160,
+            university: "Midlands State University",
+            universityNative: "Midlands State University",
+            country: "Zimbabwe",
+            city: "Gweru",
+            lat: -19.4533,
+            lng: 29.8167,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land and Water Resources", duration: 4},
+                {level: "master", name: "Land and Water Resource Management", duration: 2},
+                {level: "master", name: "Land Resource Assessment for Development Planning", duration: 2}
+            ],
+            website: "https://www.msu.ac.zw",
+            established: 1999
+        },
+
+        {
+            id: 3170,
+            university: "University of Botswana",
+            universityNative: "University of Botswana",
+            country: "Botswana",
+            city: "Gaborone",
+            lat: -24.6581,
+            lng: 25.9122,
+            region: "africa",
+            programs: [
+                {level: "bachelor", name: "Land Management", duration: 4}
+            ],
+            website: "https://www.ub.bw",
+            established: 1982
+        },
+
+        {
+            id: 3180,
+            university: "University of the Free State",
+            universityNative: "Universiteit van die Vrystaat",
+            country: "South Africa",
+            city: "Bloemfontein",
+            lat: -29.1066,
+            lng: 26.1845,
+            region: "africa",
+            programs: [
+                {level: "master", name: "Land and Property Development Management", duration: 2}
+            ],
+            website: "https://www.ufs.ac.za",
+            established: 1904
+        },
+        {
+            id: 3181,
+            university: "University of the Western Cape",
+            universityNative: "Universiteit van Wes-Kaapland",
+            country: "South Africa",
+            city: "Bellville",
+            lat: -33.9321,
+            lng: 18.6264,
+            region: "africa",
+            programs: [
+                {level: "master", name: "Land and Agrarian Studies", duration: 2}
+            ],
+            website: "https://www.uwc.ac.za",
+            established: 1959
+        },
+
+        {
+            id: 6000,
+            university: "RMIT University",
+            universityNative: "RMIT University",
+            country: "Australia",
+            city: "Melbourne",
+            lat: -37.8074,
+            lng: 144.9643,
+            region: "oceania",
+            programs: [
+                {level: "master", name: "Conservation and Land Management", duration: 2}
+            ],
+            website: "https://www.rmit.edu.au",
+            established: 1887
+        },
+        {
+            id: 6001,
+            university: "The University of Western Australia",
+            universityNative: "The University of Western Australia",
+            country: "Australia",
+            city: "Perth",
+            lat: -31.9803,
+            lng: 115.8190,
+            region: "oceania",
+            programs: [
+                {level: "postgraduate", name: "Land Administration", duration: 1}
+            ],
+            website: "https://www.uwa.edu.au",
+            established: 1911
+        },
+        {
+            id: 6002,
+            university: "Deakin University",
+            universityNative: "Deakin University",
+            country: "Australia",
+            city: "Melbourne",
+            lat: -37.8473,
+            lng: 145.1139,
+            region: "oceania",
+            programs: [
+                {level: "master", name: "Land and Sea Country Management", duration: 2}
+            ],
+            website: "https://www.deakin.edu.au",
+            established: 1974
+        },
+        {
+            id: 6003,
+            university: "James Cook University",
+            universityNative: "James Cook University",
+            country: "Australia",
+            city: "Townsville",
+            lat: -19.3312,
+            lng: 146.7570,
+            region: "oceania",
+            programs: [
+                {level: "bachelor", name: "Land and Water Management", duration: 4}
+            ],
+            website: "https://www.jcu.edu.au",
+            established: 1970
+        },
+        {
+            id: 6004,
+            university: "Swinburne University of Technology",
+            universityNative: "Swinburne University of Technology",
+            country: "Australia",
+            city: "Melbourne",
+            lat: -37.8206,
+            lng: 145.0351,
+            region: "oceania",
+            programs: [
+                {level: "master", name: "Conservation and Land Management", duration: 2}
+            ],
+            website: "https://www.swinburne.edu.au",
+            established: 1908
+        },
+
+        {
+            id: 6010,
+            university: "Lincoln University",
+            universityNative: "Lincoln University",
+            country: "New Zealand",
+            city: "Lincoln",
+            lat: -43.6413,
+            lng: 172.4886,
+            region: "oceania",
+            programs: [
+                {level: "bachelor", name: "Land and Property Management", duration: 3}
+            ],
+            website: "https://www.lincoln.ac.nz",
+            established: 1878
+        },
+
+        {
+            id: 6020,
+            university: "The University of the South Pacific",
+            universityNative: "The University of the South Pacific",
+            country: "Fiji",
+            city: "Suva",
+            lat: -18.1491,
+            lng: 178.4434,
+            region: "oceania",
+            programs: [
+                {level: "bachelor", name: "Land Management", duration: 4},
+                {level: "master", name: "Land Management", duration: 2}
+            ],
+            website: "https://www.usp.ac.fj",
+            established: 1968
+        },
+
+        {
+            id: 4000,
+            university: "Fleming College",
+            universityNative: "Fleming College",
+            country: "Canada",
+            city: "Lindsay",
+            lat: 44.3508,
+            lng: -78.7485,
+            region: "northamerica",
+            programs: [
+                {level: "master", name: "Environmental Land Management", duration: 2}
+            ],
+            website: "https://flemingcollege.ca",
+            established: 1967
+        },
+        {
+            id: 4001,
+            university: "The University of British Columbia",
+            universityNative: "The University of British Columbia",
+            country: "Canada",
+            city: "Vancouver",
+            lat: 49.2606,
+            lng: -123.2460,
+            region: "northamerica",
+            programs: [
+                {level: "master", name: "Master of Land and Water Systems", duration: 2}
+            ],
+            website: "https://www.ubc.ca",
+            established: 1908
+        },
+        {
+            id: 4002,
+            university: "University of Calgary",
+            universityNative: "University of Calgary",
+            country: "Canada",
+            city: "Calgary",
+            lat: 51.0779,
+            lng: -114.1332,
+            region: "northamerica",
+            programs: [
+                {level: "bachelor", name: "Professional Land Management", duration: 4}
+            ],
+            website: "https://www.ucalgary.ca",
+            established: 1966
+        },
+
+        {
+            id: 4010,
+            university: "University of Technology, Jamaica",
+            universityNative: "University of Technology, Jamaica",
+            country: "Jamaica",
+            city: "Kingston",
+            lat: 18.0156,
+            lng: -76.7446,
+            region: "northamerica",
+            programs: [
+                {level: "master", name: "Land Management (MSc Built Environment major)", duration: 2}
+            ],
+            website: "https://www.utech.edu.jm",
+            established: 1958
+        },
+
+        {
+            id: 4020,
+            university: "The University of the West Indies, St. Augustine",
+            universityNative: "The University of the West Indies, St. Augustine",
+            country: "Trinidad and Tobago",
+            city: "St. Augustine",
+            lat: 10.6410,
+            lng: -61.3995,
+            region: "northamerica",
+            programs: [
+                {level: "bachelor", name: "BSc Land Management (Valuation)", duration: 4}
+            ],
+            website: "https://sta.uwi.edu",
+            established: 1960
+        },
+
+        {
+            id: 4030,
+            university: "The University of Texas Permian Basin",
+            universityNative: "The University of Texas Permian Basin",
+            country: "United States",
+            city: "Odessa",
+            lat: 31.8902,
+            lng: -102.3269,
+            region: "northamerica",
+            programs: [
+                {level: "bachelor", name: "Energy Land Management (Landman)", duration: 4}
+            ],
+            website: "https://www.utpb.edu",
+            established: 1973
+        },
+        {
+            id: 4031,
+            university: "Everglades University",
+            universityNative: "Everglades University",
+            country: "United States",
+            city: "Boca Raton",
+            lat: 26.3745,
+            lng: -80.1017,
+            region: "northamerica",
+            programs: [
+                {level: "bachelor", name: "Land & Energy Management", duration: 4}
+            ],
+            website: "https://www.evergladesuniversity.edu",
+            established: 1990
+        },
+        {
+            id: 4032,
+            university: "Lincoln Institute of Land Policy",
+            universityNative: "Lincoln Institute of Land Policy",
+            country: "United States",
+            city: "Cambridge",
+            lat: 42.3755,
+            lng: -71.1189,
+            region: "northamerica",
+            programs: [
+                {level: "master", name: "Land Policy and Sustainable Urban Development", duration: 2}
+            ],
+            website: "https://www.lincolninst.edu",
+            established: 1946
+        },
+        {
+            id: 4033,
+            university: "Marietta College",
+            universityNative: "Marietta College",
+            country: "United States",
+            city: "Marietta",
+            lat: 39.4173,
+            lng: -81.4526,
+            region: "northamerica",
+            programs: [
+                {level: "bachelor", name: "Land and Energy Management", duration: 4}
+            ],
+            website: "https://www.marietta.edu",
+            established: 1835
+        },
+        {
+            id: 4034,
+            university: "University of Louisiana at Lafayette",
+            universityNative: "University of Louisiana at Lafayette",
+            country: "United States",
+            city: "Lafayette",
+            lat: 30.2127,
+            lng: -92.0199,
+            region: "northamerica",
+            programs: [
+                {level: "bachelor", name: "Professional Land & Resource Management Program", duration: 3},
+                {level: "bachelor", name: "Environmental, Energy and Land Management", duration: 4}
+            ],
+            website: "https://www.louisiana.edu",
+            established: 1898
+        },
+        {
+            id: 4035,
+            university: "Columbia Southern University",
+            universityNative: "Columbia Southern University",
+            country: "United States",
+            city: "Orange Beach",
+            lat: 30.2905,
+            lng: -87.6272,
+            region: "northamerica",
+            programs: [
+                {level: "bachelor", name: "Occupational Safety and Health – Energy and Land-Use Management", duration: 4}
+            ],
+            website: "https://www.columbiasouthern.edu",
+            established: 1993
+        },
+
+        {
+            id: 5000,
+            university: "Federal University of Santa Catarina",
+            universityNative: "Universidade Federal de Santa Catarina",
+            country: "Brazil",
+            city: "Florianópolis",
+            lat: -27.6022,
+            lng: -48.5209,
+            region: "southamerica",
+            programs: [
+                {level: "master", name: "Transport Engineering and Land Management", duration: 2}
+            ],
+            website: "https://ufsc.br",
+            established: 1960
+        },
+
+        {
+            id: 5010,
+            university: "University of Chile",
+            universityNative: "Universidad de Chile",
+            country: "Chile",
+            city: "Santiago",
+            lat: -33.5774,
+            lng: -70.6409,
+            region: "southamerica",
+            programs: [
+                {level: "master", name: "Soil and Water Management", duration: 2},
+                {level: "master", name: "Territorial Management of Natural Resources", duration: 2}
+            ],
+            website: "https://www.uchile.cl",
+            established: 1842
+        }
+    ];
+
+// Geodata
+    const countryCoordinates = {
+// Europe
+    "Germany": { lat: 51.1657, lng: 10.4515 },
+    "Netherlands": { lat: 52.1326, lng: 5.2913 },
+    "Denmark": { lat: 56.2639, lng: 9.5018 },
+    "Spain": { lat: 40.4637, lng: -3.7492 },
+    "France": { lat: 46.2276, lng: 2.2137 },
+    "Belgium": { lat: 50.5039, lng: 4.4699 },
+    "Turkey": { lat: 38.9637, lng: 35.2433 },
+    "Italy": { lat: 41.8719, lng: 12.5674 },
+    "Lithuania": { lat: 55.1694, lng: 23.8813 },
+    "Ukraine": { lat: 48.3794, lng: 31.1656 },
+    "Russia": { lat: 61.5240, lng: 105.3188 },
+    "Belarus": { lat: 53.7098, lng: 27.9534 },
+    "Ireland": { lat: 53.4129, lng: -8.2439 },
+    "Estonia": { lat: 58.5953, lng: 25.0136 },
+    "Moldova": { lat: 47.4116, lng: 28.3699 },
+    "Sweden": { lat: 60.1282, lng: 18.6435 },
+    "Serbia": { lat: 44.0165, lng: 21.0059 },
+    "Czech Republic": { lat: 49.8175, lng: 15.4730 },
+    "Hungary": { lat: 47.1625, lng: 19.5033 },
+    "Greece": { lat: 39.0742, lng: 21.8243 },
+    "United Kingdom": { lat: 55.3781, lng: -3.4360 },
+    "Poland": { lat: 51.9194, lng: 19.1451 },
+// Asia
+    "China": { lat: 35.8617, lng: 104.1954 },
+    "Indonesia": { lat: -0.7893, lng: 113.9213 },
+    "South Korea": { lat: 35.9078, lng: 127.7669 },
+    "Malaysia": { lat: 4.2105, lng: 101.9758 },
+    "Philippines": { lat: 12.8797, lng: 121.7740 },
+    "Cambodia": { lat: 12.5657, lng: 104.9910 },
+    "Vietnam": { lat: 14.0583, lng: 108.2772 },
+    "Bangladesh": { lat: 23.6850, lng: 90.3563 },
+    "Nepal": { lat: 28.3949, lng: 84.1240 },
+    "Kazakhstan": { lat: 48.0196, lng: 66.9237 },
+    "Uzbekistan": { lat: 41.3775, lng: 64.5853 },
+    "Kyrgyzstan": { lat: 41.2044, lng: 74.7661 },
+    "Palestine": { lat: 31.9522, lng: 35.2332 },
+    "Iraq": { lat: 33.2232, lng: 43.6793 },
+    "Jordan": { lat: 30.5852, lng: 36.2384 },
+    "Taiwan (Chinese Taiwan)": { lat: 23.6978, lng: 120.9605 },
+    "Thailand": { lat: 15.8700, lng: 100.9925 },
+// Africa
+    "Egypt": { lat: 26.8206, lng: 30.8025 },
+    "Nigeria": { lat: 9.0820, lng: 8.6753 },
+    "Senegal": { lat: 14.4974, lng: -14.4524 },
+    "Sierra Leone": { lat: 8.4606, lng: -11.7799 },
+    "Togo": { lat: 8.6195, lng: 0.8248 },
+    "Ethiopia": { lat: 9.1450, lng: 40.4897 },
+    "Somalia": { lat: 5.1521, lng: 46.1996 },
+    "Malawi": { lat: -13.2543, lng: 34.3015 },
+    "Cameroon": { lat: 7.3697, lng: 12.3547 },
+    "Rwanda": { lat: -1.9403, lng: 29.8739 },
+    "Tanzania": { lat: -6.3690, lng: 34.8888 },
+    "Zambia": { lat: -13.1339, lng: 27.8493 },
+    "Zimbabwe": { lat: -19.0154, lng: 29.1549 },
+    "Botswana": { lat: -22.3285, lng: 24.6849 },
+    "South Africa": { lat: -30.5595, lng: 22.9375 },
+    "Ghana": { lat: 7.9465, lng: -1.0232 },
+    "Uganda": { lat: 1.3733, lng: 32.2903 },
+    "Kenya": { lat: -0.0236, lng: 37.9062 },
+    "Namibia": { lat: -22.9576, lng: 18.4904 },
+// North America
+    "Canada": { lat: 56.1304, lng: -106.3468 },
+    "United States": { lat: 37.0902, lng: -95.7129 },
+    "Jamaica": { lat: 18.1096, lng: -77.2975 },
+    "Trinidad and Tobago": { lat: 10.6918, lng: -61.2225 },
+// South America
+    "Brazil": { lat: -14.2350, lng: -51.9253 },
+    "Chile": { lat: -35.6751, lng: -71.5430 },
+// Oceania
+    "Australia": { lat: -25.2744, lng: 133.7751 },
+    "New Zealand": { lat: -40.9006, lng: 174.8860 },
+    "Fiji": { lat: -17.7134, lng: 178.0650 }
+};
+
+    const continentCoordinates = {
+        "Europe": { lat: 54.5260, lng: 15.2551 },
+        "Asia": { lat: 34.0479, lng: 100.6197 },
+        "Africa": { lat: -8.7832, lng: 34.5085 },
+        "North America": { lat: 54.5260, lng: -105.2551 },
+        "South America": { lat: -8.7832, lng: -55.4915 },
+        "Oceania": { lat: -22.7359, lng: 140.0188 }
+    };
+
+    // control section
+let map;
+let currentMarkers = [];
+let currentCircles = [];
+let currentData = landManagementPrograms;
+let currentZoom = 2;
+let highlightedMarkers = [];
+let visibleCountries = new Set();
+
+const countryColors = {};
+let colorIndex = 0;
+
+const pastelColors = [
+    '#FFB5BA', '#FFDAB5', '#B5E4FF', '#C5FFB5', '#E6B5FF',
+    '#FFE5B5', '#B5FFF0', '#FFB5E8', '#B5D4FF', '#F0FFB5',
+    '#FFB5CC', '#B5FFD9', '#FFC8B5', '#B5C8FF', '#DDB5FF',
+    '#FFFAB5', '#B5FFE6', '#FFB5F5', '#B5BAFF', '#E8FFB5'
+];
+
+const continentOrder = ['Europe', 'Asia', 'Africa', 'North America', 'South America', 'Oceania'];
+let totalsOverviewChart = null;
+let programLevelChart = null;
+let continentProgramChart = null;
+
+const barValuePlugin = {
+    id: 'barValuePlugin',
+    afterDatasetsDraw(chart, args, pluginOptions) {
+        const { ctx } = chart;
+        const color = pluginOptions && pluginOptions.color ? pluginOptions.color : '#1a1a1a';
+        const font = pluginOptions && pluginOptions.font ? pluginOptions.font : '600 12px Arial';
+
+        chart.data.datasets.forEach((dataset, datasetIndex) => {
+            const meta = chart.getDatasetMeta(datasetIndex);
+            meta.data.forEach((element, index) => {
+                if (!element || element.hidden) return;
+                const value = dataset.data[index];
+                if (value === null || typeof value === 'undefined') return;
+
+                const position = element.tooltipPosition();
+                ctx.save();
+                ctx.font = font;
+                ctx.fillStyle = color;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText(value, position.x, position.y - 6);
+                ctx.restore();
+            });
+        });
+    }
+};
+
+function formatUniversityName(uni) {
+    if (uni.universityNative && uni.universityNative !== uni.university) {
+        return `${uni.university}<br><span style="font-style: italic; font-size: 0.9em;">${uni.universityNative}</span>`;
+    }
+    return uni.university;
+}
+
+function getCountryColor(country) {
+    if (!countryColors[country]) {
+        countryColors[country] = pastelColors[colorIndex % pastelColors.length];
+        colorIndex++;
+    }
+    return countryColors[country];
+}
+
+function getContinentColor(continent) {
+    const colors = {
+        'Europe': '#3498db',
+        'Asia': '#e74c3c',
+        'Africa': '#f39c12',
+        'North America': '#9b59b6',
+        'South America': '#2ecc71',
+        'Oceania': '#1abc9c'
+    };
+    return colors[continent] || '#95a5a6';
+}
+
+function getContinentNameFromRegion(region) {
+    switch(region) {
+        case 'europe':
+            return 'Europe';
+        case 'asia':
+            return 'Asia';
+        case 'africa':
+            return 'Africa';
+        case 'northamerica':
+            return 'North America';
+        case 'southamerica':
+            return 'South America';
+        case 'oceania':
+            return 'Oceania';
+        default:
+            return null;
+    }
+}
+
+function aggregateStatistics(data) {
+    const countrySet = new Set();
+    let totalPrograms = 0;
+    let bachelorPrograms = 0;
+    let masterPrograms = 0;
+    const continentPrograms = continentOrder.map(() => 0);
+
+    data.forEach(uni => {
+        countrySet.add(uni.country);
+        const continentName = getContinentNameFromRegion(uni.region);
+        const continentIndex = continentName ? continentOrder.indexOf(continentName) : -1;
+
+        uni.programs.forEach(program => {
+            totalPrograms += 1;
+            if (program.level === 'bachelor') {
+                bachelorPrograms += 1;
+            }
+            if (program.level === 'master') {
+                masterPrograms += 1;
+            }
+            if (continentIndex !== -1) {
+                continentPrograms[continentIndex] += 1;
+            }
+        });
+    });
+
+    return {
+        totalPrograms,
+        totalUniversities: data.length,
+        totalCountries: countrySet.size,
+        bachelorPrograms,
+        masterPrograms,
+        continentPrograms
+    };
+}
+
+function initMap() {
+    map = L.map('map', {
+        center: [20, 0],
+        zoom: 2,
+        minZoom: 2,
+        maxZoom: 18,
+        worldCopyJump: true
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors | Land Management Education Map'
+    }).addTo(map);
+
+    map.on('zoomend', function() {
+        currentZoom = map.getZoom();
+        updateZoomInfo();
+        updateVisualization();
+    });
+
+    map.on('moveend', function() {
+        if (currentZoom === 4) {
+            updateDynamicLegend();
+        }
+    });
+
+    updateVisualization();
+    updateStatistics(currentData);
+}
+
+function updateZoomInfo() {
+    document.getElementById('zoomLevel').textContent = `Zoom: ${currentZoom}`;
+    if (currentZoom <= 3) {
+        document.getElementById('viewMode').textContent = 'View: Continent Statistics';
+    } else if (currentZoom <= 4) {
+        document.getElementById('viewMode').textContent = 'View: Country Statistics';
+    } else if (currentZoom <= 7) {
+        document.getElementById('viewMode').textContent = 'View: Regional Details';
+    } else {
+        document.getElementById('viewMode').textContent = 'View: University Locations';
+    }
+}
+
+function updateVisualization() {
+    clearAllLayers();
+
+    if (currentZoom <= 3) {
+
+        showContinentStatistics();
+        updateLegendForContinents();
+    } else if (currentZoom <= 4) {
+
+        showCountryStatistics();
+        updateDynamicLegend();
+    } else {
+
+        showUniversityMarkers();
+        updateLegendForUniversities();
+    }
+}
+
+function clearAllLayers() {
+    currentMarkers.forEach(marker => map.removeLayer(marker));
+    currentCircles.forEach(circle => map.removeLayer(circle));
+    currentMarkers = [];
+    currentCircles = [];
+    visibleCountries.clear();
+}
+
+function showContinentStatistics() {
+
+    const continentStats = {
+        "Europe": { universities: [], totalPrograms: 0, bachelorCount: 0, masterCount: 0, countries: new Set() },
+        "Asia": { universities: [], totalPrograms: 0, bachelorCount: 0, masterCount: 0, countries: new Set() },
+        "Africa": { universities: [], totalPrograms: 0, bachelorCount: 0, masterCount: 0, countries: new Set() },
+        "North America": { universities: [], totalPrograms: 0, bachelorCount: 0, masterCount: 0, countries: new Set() },
+        "South America": { universities: [], totalPrograms: 0, bachelorCount: 0, masterCount: 0, countries: new Set() },
+        "Oceania": { universities: [], totalPrograms: 0, bachelorCount: 0, masterCount: 0, countries: new Set() }
+    };
+
+    currentData.forEach(uni => {
+        const continentName = getContinentNameFromRegion(uni.region);
+
+        if (continentName && continentStats[continentName]) {
+            continentStats[continentName].universities.push(uni);
+            continentStats[continentName].countries.add(uni.country);
+            uni.programs.forEach(p => {
+                continentStats[continentName].totalPrograms++;
+                if (p.level === 'bachelor') continentStats[continentName].bachelorCount++;
+                if (p.level === 'master') continentStats[continentName].masterCount++;
+            });
+        }
+    });
+
+    Object.keys(continentStats).forEach(continent => {
+        const stats = continentStats[continent];
+        if (stats.universities.length === 0) return;
+
+        const coords = continentCoordinates[continent];
+        const radius = Math.sqrt(stats.universities.length) * 150000;
+
+        const continentColor = getContinentColor(continent);
+
+        const circle = L.circle([coords.lat, coords.lng], {
+            radius: radius,
+            fillColor: continentColor,
+            color: '#fff',
+            weight: 3,
+            opacity: 1,
+            fillOpacity: 0.6,
+            className: 'continent-circle'
+        }).addTo(map);
+
+        const label = L.divIcon({
+            className: 'continent-label',
+            html: `<div style="color: white; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); text-align: center;">
+                    ${continent}<br>
+                    <span style="font-size: 14px; display: block;">${stats.universities.length} universities</span>
+                    <span style="font-size: 14px; display: block;">${stats.totalPrograms} programs</span>
+                    <span style="font-size: 14px; display: block;">${stats.countries.size} countries</span>
+                   </div>`,
+            iconSize: [160, 60]
+        });
+        const labelMarker = L.marker([coords.lat, coords.lng], { icon: label }).addTo(map);
+
+        circle.on('click', function() {
+            showContinentDetails(continent, stats);
+        });
+
+        const popupContent = `
+            <div style="text-align: center;">
+                <h5>${continent}</h5>
+                <p><strong>Countries:</strong> ${stats.countries.size}</p>
+                <p><strong>Universities:</strong> ${stats.universities.length}</p>
+                <p><strong>Total Programs:</strong> ${stats.totalPrograms}</p>
+                <p>Bachelor: ${stats.bachelorCount} | Master: ${stats.masterCount}</p>
+                <button class="btn btn-sm btn-primary" onclick="zoomToContinent('${continent}')">Zoom In</button>
+            </div>
+        `;
+        circle.bindPopup(popupContent);
+
+        currentCircles.push(circle);
+        currentMarkers.push(labelMarker);
+    });
+}
+
+function showContinentDetails(continent, stats) {
+    document.getElementById('panelTitle').textContent = `${continent} - Overview`;
+
+    let detailsHtml = `
+        <div class="mb-3">
+            <h6>Statistics</h6>
+            <table class="table table-sm">
+                <tr><td><strong>Total Countries:</strong></td><td>${stats.countries.size}</td></tr>
+                <tr><td><strong>Total Universities:</strong></td><td>${stats.universities.length}</td></tr>
+                <tr><td><strong>Total Programs:</strong></td><td>${stats.totalPrograms}</td></tr>
+                <tr><td><strong>Bachelor Programs:</strong></td><td>${stats.bachelorCount}</td></tr>
+                <tr><td><strong>Master Programs:</strong></td><td>${stats.masterCount}</td></tr>
+            </table>
+        </div>
+
+        <div class="mb-3">
+            <h6>Countries in ${continent}</h6>
+            <div class="list-group">
+    `;
+
+    const countriesData = {};
+    stats.universities.forEach(uni => {
+        if (!countriesData[uni.country]) {
+            countriesData[uni.country] = [];
+        }
+        countriesData[uni.country].push(uni);
+    });
+
+    Object.keys(countriesData).sort().forEach(country => {
+        detailsHtml += `
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>${country}</strong><br>
+                        <small>${countriesData[country].length} universities</small>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary" onclick="zoomToCountry('${country}')">View</button>
+                </div>
+            </div>
+        `;
+    });
+
+    detailsHtml += `
+            </div>
+        </div>
+        <button class="btn btn-primary w-100" onclick="zoomToContinent('${continent}')">Focus on ${continent}</button>
+    `;
+
+    document.getElementById('panelContent').innerHTML = detailsHtml;
+    document.getElementById('infoPanel').style.display = 'block';
+}
+
+function zoomToContinent(continent) {
+    const coords = continentCoordinates[continent];
+    if (coords) {
+        map.setView([coords.lat, coords.lng], 4);
+    }
+}
+
+function updateLegendForContinents() {
+    document.getElementById('legendContent').innerHTML = `
+        <div><strong>Continents (Size = Universities):</strong></div>
+        <div><span style="color: #3498db; font-size: 16px;">●</span> Europe</div>
+        <div><span style="color: #e74c3c; font-size: 16px;">●</span> Asia</div>
+        <div><span style="color: #f39c12; font-size: 16px;">●</span> Africa</div>
+        <div><span style="color: #9b59b6; font-size: 16px;">●</span> North America</div>
+        <div><span style="color: #2ecc71; font-size: 16px;">●</span> South America</div>
+        <div><span style="color: #1abc9c; font-size: 16px;">●</span> Oceania</div>
+    `;
+}
+
+function showCountryStatistics() {
+    Object.keys(countryColors).forEach(key => delete countryColors[key]);
+    colorIndex = 0;
+    visibleCountries.clear();
+
+    const countryStats = {};
+    currentData.forEach(uni => {
+        if (!countryStats[uni.country]) {
+            countryStats[uni.country] = {
+                universities: [],
+                totalPrograms: 0,
+                bachelorCount: 0,
+                masterCount: 0
+            };
+        }
+        countryStats[uni.country].universities.push(uni);
+        uni.programs.forEach(p => {
+            countryStats[uni.country].totalPrograms++;
+            if (p.level === 'bachelor') countryStats[uni.country].bachelorCount++;
+            if (p.level === 'master') countryStats[uni.country].masterCount++;
+        });
+    });
+
+    const bounds = map.getBounds();
+    const sortedCountries = Object.keys(countryStats).sort();
+
+    sortedCountries.forEach(country => {
+        const coords = countryCoordinates[country];
+        if (!coords) return;
+
+        const stats = countryStats[country];
+        const radius = Math.sqrt(stats.universities.length) * 80000;
+
+        const countryLatLng = L.latLng(coords.lat, coords.lng);
+        if (bounds.contains(countryLatLng)) {
+            visibleCountries.add(country);
+        }
+
+        const countryColor = getCountryColor(country);
+
+        const circle = L.circle([coords.lat, coords.lng], {
+            radius: radius,
+            fillColor: countryColor,
+            color: '#ffffff',
+            weight: 2.5,
+            opacity: 1,
+            fillOpacity: 0.65,
+            className: 'country-circle'
+        }).addTo(map);
+
+        const label = L.divIcon({
+            className: 'country-label',
+            html: `<div style="display: inline-flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; color: #1f1f1f; text-shadow: 1px 1px 3px rgba(255,255,255,0.8), -1px -1px 3px rgba(255,255,255,0.8);">
+                    ${country} <span class="country-count">${stats.universities.length}</span>
+                   </div>`,
+            iconSize: [100, 40]
+        });
+        const labelMarker = L.marker([coords.lat, coords.lng], { icon: label }).addTo(map);
+
+        const handleCountryInteraction = () => {
+            showCountryDetails(country, stats);
+            if (currentZoom === 3) {
+                zoomToCountry(country);
+            }
+        };
+
+        labelMarker.on('click', handleCountryInteraction);
+
+        circle.on('click', handleCountryInteraction);
+
+        const popupContent = `
+            <div style="text-align: center;">
+                <h6>${country}</h6>
+                <p><strong>Universities:</strong> ${stats.universities.length}</p>
+                <p><strong>Total Programs:</strong> ${stats.totalPrograms}</p>
+                <p>Bachelor: ${stats.bachelorCount} | Master: ${stats.masterCount}</p>
+                <button class="btn btn-sm btn-primary" onclick="zoomToCountry('${country}')">Zoom In</button>
+            </div>
+        `;
+        circle.bindPopup(popupContent);
+
+        currentCircles.push(circle);
+        currentMarkers.push(labelMarker);
+    });
+}
+
+function updateDynamicLegend() {
+    let legendHtml = '<div style="margin-bottom: 8px;"><strong>Visible Countries:</strong></div>';
+
+    if (visibleCountries.size === 0) {
+        legendHtml += '<div style="font-size: 12px; color: #666;">No countries in view</div>';
+    } else {
+        const sortedVisibleCountries = Array.from(visibleCountries).sort();
+
+        sortedVisibleCountries.forEach(country => {
+            const color = getCountryColor(country);
+            const uniCount = currentData.filter(uni => uni.country === country).length;
+
+            legendHtml += `
+                <div class="legend-item">
+                    <div class="legend-color-circle" style="background-color: ${color};"></div>
+                    <span>${country} (${uniCount})</span>
+                </div>
+            `;
+        });
+    }
+
+    legendHtml += `<div style="margin-top: 8px; font-size: 11px; color: #666;">
+                    Total: ${visibleCountries.size} countries
+                  </div>`;
+
+    document.getElementById('legendContent').innerHTML = legendHtml;
+}
+
+function showUniversityMarkers() {
+    currentData.forEach(uni => {
+        const icon = createCustomIcon(uni.programs);
+        const marker = L.marker([uni.lat, uni.lng], { icon: icon }).addTo(map);
+
+        const popupContent = createPopupContent(uni);
+        marker.bindPopup(popupContent);
+
+        marker.on('click', function() {
+            showUniversityDetails(uni);
+        });
+        currentMarkers.push(marker);
+    });
+}
+
+function createCustomIcon(programs) {
+    const levels = programs.map(p => p.level);
+    let color = '#ff6600';
+
+    if (levels.length === 1) {
+        if (levels[0] === 'bachelor') color = '#28a745';
+        else if (levels[0] === 'master') color = '#007bff';
+    } else if (levels.includes('bachelor') && levels.includes('master')) {
+        color = '#ff6600';
+    }
+
+    return L.divIcon({
+        className: 'custom-div-icon',
+        html: `<div style="background-color: ${color}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);"></div>`,
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
+    });
+}
+
+function createPopupContent(uni) {
+    let programsHtml = '';
+    uni.programs.forEach(program => {
+        const badgeClass = `badge-${program.level}`;
+        programsHtml += `<div class="mb-1">
+            <span class="program-badge ${badgeClass}">${program.level.toUpperCase()}</span>
+            <small>${program.name}</small>
+        </div>`;
+    });
+
+    return `
+        <div class="custom-popup">
+            <h6 class="mb-2">${formatUniversityName(uni)}</h6>
+            <p class="mb-1"><strong>Location:</strong> ${uni.city}, ${uni.country}</p>
+            <div class="mb-2">
+                <strong>Programs:</strong>
+                ${programsHtml}
+            </div>
+        </div>
+    `;
+}
+
+function showCountryDetails(country, stats) {
+    document.getElementById('panelTitle').textContent = `${country}`;
+    let detailsHtml = `
+        <div class="mb-3">
+            <h6>Overview</h6>
+            <table class="table table-sm">
+                <tr><td><strong>Total Universities:</strong></td><td>${stats.universities.length}</td></tr>
+                <tr><td><strong>Total Programs:</strong></td><td>${stats.totalPrograms}</td></tr>
+                <tr><td><strong>Bachelor Programs:</strong></td><td>${stats.bachelorCount}</td></tr>
+                <tr><td><strong>Master Programs:</strong></td><td>${stats.masterCount}</td></tr>
+            </table>
+        </div>
+        <div class="mb-3">
+            <h6>Universities</h6>
+            <div class="list-group">
+    `;
+    stats.universities.forEach(uni => {
+        detailsHtml += `
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div>${formatUniversityName(uni)}</div>
+                        <small>${uni.city}</small>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary" onclick="showUniversityDetails(${uni.id})">Details</button>
+                </div>
+            </div>
+        `;
+    });
+
+    detailsHtml += `
+            </div>
+        </div>
+        <button class="btn btn-primary w-100" onclick="zoomToCountry('${country}')">Zoom to ${country}</button>
+    `;
+
+    document.getElementById('panelContent').innerHTML = detailsHtml;
+    document.getElementById('infoPanel').style.display = 'block';
+}
+
+function showUniversityDetails(uniId) {
+    const uni = typeof uniId === 'object' ? uniId : landManagementPrograms.find(u => u.id === uniId);
+
+    document.getElementById('panelTitle').innerHTML = formatUniversityName(uni);
+
+    let detailsHtml = `
+        <div class="mb-3">
+            <h6>Basic Information</h6>
+            <table class="table table-sm">
+                <tr><td><strong>Country:</strong></td><td>${uni.country}</td></tr>
+                <tr><td><strong>City:</strong></td><td>${uni.city}</td></tr>
+                <tr><td><strong>Established:</strong></td><td>${uni.established}</td></tr>
+                <tr><td><strong>Website:</strong></td><td><a href="${uni.website}" target="_blank">${uni.website}</a></td></tr>
+            </table>
+        </div>
+
+        <div class="mb-3">
+            <h6>Academic Programs</h6>
+            <div class="list-group">
+    `;
+
+    uni.programs.forEach(program => {
+        const badgeClass = `badge-${program.level}`;
+        detailsHtml += `
+            <div class="list-group-item">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="flex: 1; display: flex; align-items: center;">
+                        <span class="program-badge ${badgeClass}" style="margin-right: 8px;">${program.level.toUpperCase()}</span>
+                        <strong style="word-break: break-word;">${program.name}</strong>
+                    </div>
+                    <div style="flex-shrink: 0; margin-left: 10px; white-space: nowrap;">
+                        <small class="text-muted">${program.duration} years</small>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    detailsHtml += `
+            </div>
+        </div>
+
+        <button class="btn btn-sm btn-outline-primary w-100" onclick="map.setView([${uni.lat}, ${uni.lng}], 12)">
+             Zoom to Location
+        </button>
+    `;
+
+    document.getElementById('panelContent').innerHTML = detailsHtml;
+    document.getElementById('infoPanel').style.display = 'block';
+}
+
+function zoomToCountry(country) {
+    const coords = countryCoordinates[country];
+    if (coords) {
+        map.setView([coords.lat, coords.lng], 6);
+    }
+}
+
+function closeInfoPanel() {
+    document.getElementById('infoPanel').style.display = 'none';
+}
+
+function updateLegendForUniversities() {
+    document.getElementById('legendContent').innerHTML = `
+        <div><span style="color: #28a745;">●</span> Bachelor Programs</div>
+        <div><span style="color: #007bff;">●</span> Master Programs</div>
+        <div><span style="color: #ff6600;">●</span> Bachelor + Master</div>
+    `;
+}
+
+function searchLocation() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+
+    clearHighlights();
+
+    if (searchTerm.length < 2) {
+        currentData = landManagementPrograms;
+        updateVisualization();
+        updateStatistics(currentData);
+        return;
+    }
+
+    const countryExactMatch = landManagementPrograms.filter(uni =>
+        uni.country.toLowerCase() === searchTerm
+    );
+
+    if (countryExactMatch.length > 0) {
+        highlightCountryUniversities(countryExactMatch[0].country);
+        return;
+    }
+
+    const uniMatches = landManagementPrograms.filter(uni =>
+        uni.university.toLowerCase().includes(searchTerm) ||
+        (uni.universityNative && uni.universityNative.toLowerCase().includes(searchTerm))
+    );
+
+    if (uniMatches.length === 1) {
+        highlightAndZoomToUniversity(uniMatches[0]);
+        return;
+    } else if (uniMatches.length > 1) {
+        showMultipleResults(uniMatches, 'Universities');
+        return;
+    }
+
+    currentData = landManagementPrograms.filter(uni =>
+        uni.university.toLowerCase().includes(searchTerm) ||
+        (uni.universityNative && uni.universityNative.toLowerCase().includes(searchTerm)) ||
+        uni.country.toLowerCase().includes(searchTerm) ||
+        uni.city.toLowerCase().includes(searchTerm)
+    );
+
+    updateVisualization();
+    updateStatistics(currentData);
+}
+
+function clearHighlights() {
+    highlightedMarkers.forEach(marker => {
+        map.removeLayer(marker);
+    });
+    highlightedMarkers = [];
+}
+
+function highlightCountryUniversities(country) {
+    clearHighlights();
+
+    const universities = landManagementPrograms.filter(uni => uni.country === country);
+
+    if (currentZoom <= 4) {
+        const coords = countryCoordinates[country];
+        if (coords) {
+            map.setView([coords.lat, coords.lng], 6);
+        }
+    }
+
+    setTimeout(() => {
+        universities.forEach(uni => {
+            const highlightIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div style="position: relative;">
+                    <div style="background-color: #FFD700; width: 30px; height: 30px;
+                         border-radius: 50%; border: 3px solid #FF0000;
+                         box-shadow: 0 0 20px rgba(255,0,0,0.8);
+                         animation: pulse 1.5s infinite;"></div>
+                </div>`,
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            });
+
+            const marker = L.marker([uni.lat, uni.lng], { icon: highlightIcon, zIndexOffset: 1000 }).addTo(map);
+            marker.bindPopup(`<div>${formatUniversityName(uni)}</div><small>${uni.city}, ${uni.country}</small>`);
+            highlightedMarkers.push(marker);
+        });
+    }, 500);
+
+    showCountrySearchResult(country, universities);
+}
+
+function highlightAndZoomToUniversity(uni) {
+    clearHighlights();
+
+    map.setView([uni.lat, uni.lng], 14);
+
+    setTimeout(() => {
+        const highlightIcon = L.divIcon({
+            className: 'custom-div-icon',
+            html: `<div style="position: relative;">
+                <div style="background-color: #FFD700; width: 40px; height: 40px;
+                     border-radius: 50%; border: 4px solid #FF0000;
+                     box-shadow: 0 0 30px rgba(255,0,0,1);
+                     animation: pulse 1.5s infinite;"></div>
+            </div>`,
+            iconSize: [40, 40],
+            iconAnchor: [20, 20]
+        });
+
+        const marker = L.marker([uni.lat, uni.lng], { icon: highlightIcon, zIndexOffset: 1000 }).addTo(map);
+
+        const popupContent = createPopupContent(uni);
+        marker.bindPopup(popupContent).openPopup();
+
+        highlightedMarkers.push(marker);
+    }, 500);
+
+    showUniversityDetails(uni);
+}
+
+function showCountrySearchResult(country, universities) {
+    document.getElementById('panelTitle').textContent = `Search: ${country}`;
+
+    let detailsHtml = `
+        <div class="alert alert-success">
+            <strong>Found ${universities.length} universities in ${country}</strong>
+        </div>
+        <div class="list-group">
+    `;
+
+    universities.forEach(uni => {
+        const uniData = JSON.stringify(uni).replace(/"/g, '&quot;');
+        detailsHtml += `
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div>${formatUniversityName(uni)}</div>
+                        <small class="text-muted">📍 ${uni.city}</small>
+                    </div>
+                    <button class="btn btn-sm btn-primary"
+                            onclick='highlightAndZoomToUniversity(${uniData})'>
+                        View
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+
+    detailsHtml += '</div>';
+
+    document.getElementById('panelContent').innerHTML = detailsHtml;
+    document.getElementById('infoPanel').style.display = 'block';
+}
+
+function showMultipleResults(results, type) {
+    document.getElementById('panelTitle').textContent = `Search Results: ${type}`;
+
+    let detailsHtml = `
+        <div class="alert alert-info">
+            Found ${results.length} matching ${type.toLowerCase()}
+        </div>
+        <div class="list-group">
+    `;
+
+    results.forEach(uni => {
+        const uniData = JSON.stringify(uni).replace(/"/g, '&quot;');
+        detailsHtml += `
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div>${formatUniversityName(uni)}</div>
+                        <small class="text-muted">📍 ${uni.city}, ${uni.country}</small>
+                    </div>
+                    <button class="btn btn-sm btn-primary"
+                            onclick='highlightAndZoomToUniversity(${uniData})'>
+                        View
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+
+    detailsHtml += '</div>';
+
+    document.getElementById('panelContent').innerHTML = detailsHtml;
+    document.getElementById('infoPanel').style.display = 'block';
+}
+
+function renderQuickStatisticsCharts() {
+    const stats = aggregateStatistics(currentData);
+
+    const overviewCtx = document.getElementById('totalsOverviewChart');
+    const levelCtx = document.getElementById('programLevelChart');
+    const continentCtx = document.getElementById('continentProgramChart');
+
+    if (!overviewCtx || !levelCtx || !continentCtx) {
+        return;
+    }
+
+    if (totalsOverviewChart) {
+        totalsOverviewChart.destroy();
+    }
+    if (programLevelChart) {
+        programLevelChart.destroy();
+    }
+    if (continentProgramChart) {
+        continentProgramChart.destroy();
+    }
+
+    totalsOverviewChart = new Chart(overviewCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Programs', 'Universities', 'Countries'],
+            datasets: [{
+                label: 'Totals',
+                data: [stats.totalPrograms, stats.totalUniversities, stats.totalCountries],
+                backgroundColor: ['#0d6efd', '#198754', '#ffc107']
+            }]
+        },
+        plugins: [barValuePlugin],
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                barValuePlugin: {
+                    color: '#1a1a1a'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
+                }
+            }
+        }
+    });
+
+    programLevelChart = new Chart(levelCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Bachelor Programs', 'Master Programs'],
+            datasets: [{
+                label: 'Count',
+                data: [stats.bachelorPrograms, stats.masterPrograms],
+                backgroundColor: ['#28a745', '#0d6efd']
+            }]
+        },
+        plugins: [barValuePlugin],
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                barValuePlugin: {
+                    color: '#1a1a1a'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
+                }
+            }
+        }
+    });
+
+    continentProgramChart = new Chart(continentCtx, {
+        type: 'bar',
+        data: {
+            labels: continentOrder,
+            datasets: [{
+                label: 'Programs',
+                data: stats.continentPrograms,
+                backgroundColor: '#fd7e14'
+            }]
+        },
+        plugins: [barValuePlugin],
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                barValuePlugin: {
+                    color: '#1a1a1a'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
+                }
+            }
+        }
+    });
+}
+
+function applyFilters() {
+    const region = document.getElementById('regionFilter').value;
+    const bachelor = document.getElementById('bachelorCheck').checked;
+    const master = document.getElementById('masterCheck').checked;
+
+    let filtered = landManagementPrograms;
+
+    if (region !== 'all') {
+        filtered = filtered.filter(uni => uni.region === region);
+    }
+
+    if (bachelor || master) {
+        filtered = filtered.filter(uni => {
+            const levels = uni.programs.map(p => p.level);
+            return (bachelor && levels.includes('bachelor')) ||
+                   (master && levels.includes('master'));
+        });
+    } else {
+        filtered = [];
+    }
+
+    currentData = filtered;
+    updateVisualization();
+    updateStatistics(currentData);
+}
+
+function resetFilters() {
+    document.getElementById('regionFilter').value = 'all';
+    document.getElementById('bachelorCheck').checked = true;
+    document.getElementById('masterCheck').checked = true;
+    document.getElementById('searchInput').value = '';
+
+    currentData = landManagementPrograms;
+    updateVisualization();
+    updateStatistics(currentData);
+}
+
+function updateStatistics(data) {
+    const stats = aggregateStatistics(data);
+
+    document.getElementById('totalPrograms').textContent = stats.totalPrograms;
+    document.getElementById('totalUniversities').textContent = stats.totalUniversities;
+    document.getElementById('totalCountries').textContent = stats.totalCountries;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initMap();
+
+    const quickStatisticsModal = document.getElementById('quickStatisticsModal');
+    if (quickStatisticsModal) {
+        quickStatisticsModal.addEventListener('shown.bs.modal', renderQuickStatisticsCharts);
+    }
+});
+    </script>
+</body>
+</html>
