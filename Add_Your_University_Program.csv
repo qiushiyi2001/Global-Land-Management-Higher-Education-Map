@@ -12,7 +12,7 @@
 # country: Country where the university is located
 # city: City where the university is located
 # region: Continent/Region (e.g., europe, asia, north_america)
-# programs_level: Program/Degree Level (e.g., bachelor, master, phd)
+# programs_level: Program/Degree Level (e.g., bachelor, master)
 # programs_name: Name of the program/course
 # programs_duration: Duration of the program (in years)
 # website: Official university website URL
