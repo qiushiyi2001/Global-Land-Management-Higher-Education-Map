@@ -1,0 +1,22 @@
+# File Name: Add_Your_University_Program.csv
+# Purpose: Crowdsourced list of Global Land Management Higher Education Programs.
+
+# Data Status and Contribution
+# This base database (Version V1.0.1) was compiled entirely through manual collection by Qiushi Yi. We sincerely apologize for any omissions regarding your institution or program.
+# We highly encourage you to contribute to this research by supplementing or correcting data via GitHub.
+# We deeply appreciate all contributions to the accuracy and completeness of this dataset. If you are willing, your contribution will be formally acknowledged in the project's **Acknowledgements** section.
+
+# Field Definition:
+# university: University Name in English
+# universityNative: University Name in Local Language (optional)
+# country: Country where the university is located
+# city: City where the university is located
+# region: Continent/Region (e.g., europe, asia, north_america)
+# programs_level: Program/Degree Level (e.g., bachelor, master, phd)
+# programs_name: Name of the program/course
+# programs_duration: Duration of the program (in years)
+# website: Official university website URL
+# established: Year the university was established
+
+university,universityNative,country,city,region,programs_level,programs_name,programs_duration,website,established
+"University of Granada","Universidad de Granada","Spain","Granada","europe","bachelor","Geography and Land Management",4,"https://www.ugr.es",1531
