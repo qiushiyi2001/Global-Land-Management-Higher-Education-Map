@@ -253,7 +253,7 @@
     </div>
 
     <div class="search-box">
-        <input type="text" id="searchInput" placeholder="🔍 Search university or country..." onkeyup="searchLocation()">
+        <input type="text" id="searchInput" placeholder="Search university or country..." onkeyup="searchLocation()">
     </div>
 
     <div class="filter-panel">
@@ -341,7 +341,40 @@
                 <div class="modal-body">
                     <div id="siteInfoSection">
                         <h6>Site Information</h6>
-                        <div id="siteInfoContent" class="mt-3"></div>
+                        <div id="siteInfoContent" class="mt-3">
+                            <div class="mb-4">
+                                <h6 class="text-primary">Global Land Management Higher Education Map</h6>
+                                <p class="mb-1">Hosting and repository: https://github.com/qiushiyi2001/Global-Land-Management-Higher-Education-Map</p>
+                                <p class="mb-1"><strong>Version:</strong> V1.0.1</p>
+                                <p class="mb-0"><strong>Author:</strong> Qiushi Yi</p>
+                            </div>
+                            <div class="mb-4">
+                                <h6>Project Overview and Significance</h6>
+                                <p>This interactive map advances global research on land management higher education by consolidating programs worldwide into a single, easily navigable reference. It equips students, researchers, and practitioners with a global perspective that moves beyond regional viewpoints and supports future comparative studies.</p>
+                                <p>The platform highlights the breadth of land-related academic offerings and encourages dialogue across institutions by making the underlying database broadly accessible.</p>
+                            </div>
+                            <div class="mb-4">
+                                <h6>Purpose and Platform</h6>
+                                <p>The client-side application combines HTML5, CSS3, JavaScript, and Leaflet.js to deliver a fast, serverless mapping experience. All visualizations and interactions run directly in the browser, making the project easy to deploy and maintain.</p>
+                            </div>
+                            <div class="mb-4">
+                                <h6>Data Status and Contributions</h6>
+                                <p>The base database (Version V1.0.1) was compiled manually by Qiushi Yi and currently documents 216 programs from 155 universities across 66 countries (as of 12 September 2025). Omission of institutions is possible, and community contributions are welcomed to improve coverage.</p>
+                                <p>To contribute, edit Add_Your_University_Program.csv (https://github.com/qiushiyi2001/Global-Land-Management-Higher-Education-Map/blob/main/Add_Your_University_Program.csv) on GitHub or send updates directly via email to <a href="mailto:qiushi.yi@tum.de">qiushi.yi@tum.de</a>. Verified contributors will be acknowledged in future releases.</p>
+                            </div>
+                            <div class="mb-4">
+                                <h6>Geographical Disclaimer</h6>
+                                <p>The project uses OpenStreetMap base layers. Boundary depictions and place names originate from the OSM API and are presented solely for reference. The visualization remains politically neutral and does not assert any position on territorial representation.</p>
+                            </div>
+                            <div class="mb-4">
+                                <h6>Acknowledgements</h6>
+                                <p>The author gratefully acknowledges the guidance of Prof. Dr. Walter Timo de Vries (Technical University of Munich) and the insightful contributions of Prof. Dr. Todorovski Dimo (University of Twente), Prof. Dr. Simon Hull (University of Cape Town), Tobias Bendzko (Technical University of Munich), Walter Dachaga (Technical University of Munich), and Vineet Chaturvedi (Technical University of Munich).</p>
+                            </div>
+                            <div class="mb-4">
+                                <h6>Data Collection Methodology</h6>
+                                <p>Programs were identified through a systematic manual review of public university sources, academic publications, and search engines. Inclusion required an active bachelor's or master's program with publicly accessible information that explicitly references land, territory, or cadastre in its title or description.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -3691,11 +3724,11 @@ function showCountrySearchResult(country, universities) {
         const uniData = JSON.stringify(uni).replace(/"/g, '&quot;');
         detailsHtml += `
             <div class="list-group-item list-group-item-action">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div>${formatUniversityName(uni)}</div>
-                        <small class="text-muted">📍 ${uni.city}</small>
-                    </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div>${formatUniversityName(uni)}</div>
+                                <small class="text-muted">${uni.city}</small>
+                            </div>
                     <button class="btn btn-sm btn-primary"
                             onclick='highlightAndZoomToUniversity(${uniData})'>
                         View
