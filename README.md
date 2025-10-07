@@ -14,6 +14,14 @@ https://github.com/qiushiyi2001/Global-Land-Management-Higher-Education-Map
 **Click here to access the interactive map:**  
 **https://qiushiyi2001.github.io/Global-Land-Management-Higher-Education-Map/**
 
+### **Scan QR Code to Access:**
+
+<p align="center">
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://qiushiyi2001.github.io/Global-Land-Management-Higher-Education-Map/" alt="QR Code - Interactive Map">
+  <br>
+  <em>Scan to access the interactive map</em>
+</p>
+
 ---
 
 ## **Project Significance**
