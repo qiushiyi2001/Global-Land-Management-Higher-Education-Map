@@ -44,7 +44,7 @@ The client-side application combines HTML5, CSS3, JavaScript, and Leaflet.js to 
 
 ## **Data Status and Contributions**
 
-The base database (Version V1.0.1) was compiled manually by Qiushi Yi and currently documents 216 programs from 155 universities across 66 countries (as of 30 September 2025). Omission of institutions is possible, and community contributions are welcomed to improve coverage.
+The base database (Version V1.0.1) was compiled manually by Qiushi Yi and currently documents **216 programs from 155 universities across 66 countries** (as of 30 September 2025). Omission of institutions is possible, and community contributions are welcomed to improve coverage.
 
 To contribute, edit **Add_Your_University_Program.csv** on GitHub or send updates directly via email to **qiushi.yi@tum.de**. Verified contributors will be acknowledged in future releases.
 
