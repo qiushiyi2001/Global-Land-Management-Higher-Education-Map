@@ -1,0 +1,217 @@
+id,university,universityNative,country,city,lat,lng,region,website,established,program_level,program_name,program_duration
+1000,Technical University of Munich,Technische Universität München,Germany,Munich,48.1351,11.5820,europe,https://www.tum.de,1868,bachelor,Land Management (partial degree),3
+1000,Technical University of Munich,Technische Universität München,Germany,Munich,48.1351,11.5820,europe,https://www.tum.de,1868,master,Land Management and Geospatial Science,2
+1001,Anhalt University of Applied Sciences,Hochschule Anhalt,Germany,Bernburg,51.7990,11.7364,europe,https://www.hs-anhalt.de,1991,master,Sustainable Land Management and Conservation,2
+1010,Wageningen University & Research,Universiteit Wageningen,Netherlands,Wageningen,51.9856,5.6639,europe,https://www.wur.nl,1918,master,International Land and Water Management,2
+1011,University of Twente,Universiteit Twente,Netherlands,Enschede,52.2396,6.8497,europe,https://www.utwente.nl,1961,master,Track:Urban and Land Futures (Geo-Information Science and Earth Observation),2
+1012,Erasmus University Rotterdam,Erasmus Universiteit Rotterdam,Netherlands,Rotterdam,51.9172,4.5296,europe,https://www.eur.nl,1913,master,"Urban Housing and Land Justice: Equitable Access to Sustainable Land, Housing & Services",1
+1013,Radboud University,Radboud Universiteit,Netherlands,Nijmegen,51.8229,5.8641,europe,https://www.ru.nl,1923,master,"Spatial Planning - Planning, Land and Real Estate Development",1
+1020,Aalborg University,Aalborg Universitet,Denmark,Aalborg,57.0488,9.9217,europe,https://www.aau.dk,1974,bachelor,"Surveying, Planning and Land Management",3
+1020,Aalborg University,Aalborg Universitet,Denmark,Aalborg,57.0488,9.9217,europe,https://www.aau.dk,1974,master,"Surveying, Planning and Land Management",2
+1030,Ghent University,Universiteit Gent,Belgium,Ghent,51.0543,3.7174,europe,https://www.ugent.be,1817,master,Sustainable Land Management,2
+1031,Free University of Brussels,Vrije Universiteit Brussel,Belgium,Etterbeek,50.8223,4.3949,europe,https://www.vub.be,1970,master,Sustainable Land Management,2
+1040,Paris-Saclay University,Université Paris-Saclay,France,Gif-sur-Yvette,48.7094,2.1712,europe,https://www.universite-paris-saclay.fr,2020,master,Land Management and Community Development,2
+1050,University of Granada,Universidad de Granada,Spain,Granada,37.1773,,europe,https://www.ugr.es,1531,bachelor,Geography and Land Management,4
+1051,University of the Basque Country,Universidad del País Vasco,Spain,Leioa,43.3317,,europe,https://www.ehu.eus,1980,bachelor,Geography and Land Management,4
+1052,University of Santiago de Compostela,Universidade de Santiago de Compostela,Spain,Santiago de Compostela,42.8805,,europe,https://www.usc.es,1495,bachelor,Geography and Land Management,4
+1053,Complutense University of Madrid,Universidad Complutense de Madrid,Spain,Madrid,40.4497,,europe,https://www.ucm.es,1499,bachelor,Geography and Land Management,4
+1054,University of León,Universidad de León,Spain,León,42.6055,,europe,https://www.unileon.es,1979,bachelor,Geography and Land Management,4
+1055,Autonomous University of Madrid,Universidad Autónoma de Madrid,Spain,Madrid,40.5447,,europe,https://www.uam.es,1968,bachelor,Geography and Land Management,4
+1060,Istanbul Technical University,İstanbul Teknik Üniversitesi,Turkey,Istanbul,41.1055,29.0249,europe,https://web.itu.edu.tr,1773,master,Land Management,2
+1061,Mersin University,Mersin Üniversitesi,Turkey,Mersin,36.8121,34.6415,europe,https://www.mersin.edu.tr,1992,master,"Land Management, Real Estate Appraisal and Development (Interdisciplinary)",2
+1070,University of Bologna,Università di Bologna,Italy,Bologna,44.4949,11.3426,europe,https://www.unibo.it,1088,bachelor,Land and Agro-forestry Technologies,3
+1071,University of Rome La Sapienza,Sapienza Università di Roma,Italy,Rome,41.9028,12.4964,europe,https://www.uniroma1.it,1303,master,"Engineering Geology, Land Use Management and Georisks",2
+1071,University of Rome La Sapienza,Sapienza Università di Roma,Italy,Rome,41.9028,12.4964,europe,https://www.uniroma1.it,1303,master,Land and Environmental Engineering,2
+1072,Technical University of Milan,Politecnico di Milano,Italy,Milan,45.4642,9.1900,europe,https://www.polimi.it,1863,bachelor,Environmental and Land Planning Engineering,3
+1072,Technical University of Milan,Politecnico di Milano,Italy,Milan,45.4642,9.1900,europe,https://www.polimi.it,1863,master,Land and Environmental Engineering,2
+1073,University of Milan-Bicocca,Università degli Studi di Milano-Bicocca,Italy,Milan,45.5145,9.2122,europe,https://www.unimib.it,1998,master,Land and Environment Science and Technology,2
+1074,University of Padua,Università degli Studi di Padova,Italy,Padua,45.4064,11.8768,europe,https://www.unipd.it,1222,master,Land and Environment Science and Technology,2
+1075,University of Naples Federico II,Università degli Studi di Napoli Federico II,Italy,Naples,40.8518,14.2681,europe,https://www.unina.it,1224,master,Land and Environmental Engineering,2
+1076,University of Pavia,Università degli Studi di Pavia,Italy,Pavia,45.1853,9.1566,europe,https://www.unipv.it,1361,master,Land and Environmental Engineering,2
+1077,University of Trento,Università degli Studi di Trento,Italy,Trento,46.0664,11.1257,europe,https://www.unitn.it,1962,master,Land and Environmental Engineering,2
+1078,University of Catania,Università degli Studi di Catania,Italy,Catania,37.5079,15.0830,europe,https://www.unict.it,1434,bachelor,Environmental Sustainability and Land Management,3
+1078,University of Catania,Università degli Studi di Catania,Italy,Catania,37.5079,15.0830,europe,https://www.unict.it,1434,master,Land and Environmental Engineering,2
+1079,University of Perugia,Università degli Studi di Perugia,Italy,Perugia,43.1107,12.3908,europe,https://www.unipg.it,1308,master,Land and Environmental Engineering,2
+1080,Lithuanian College of Engineering,Lietuvos inžinerijos kolegija,Lithuania,Vilnius,54.6872,25.2797,europe,https://www.lik.lt,2000,bachelor,Land Use Planning and Management,4
+1081,Vytautas Magnus University Agriculture Academy,VDU Žemės ūkio akademija,Lithuania,Kaunas,54.8914,23.9322,europe,https://www.vdu.lt,1922,bachelor,Land Use Planning,4
+1082,Kaunas Forestry and Environmental Engineering University of Applied Sciences,Kauno miškų ir aplinkos inžinerijos kolegija,Lithuania,Girionys,54.8385,24.0329,europe,https://www.kmaik.lt,1920,bachelor,Land Management,3
+1090,Lviv Polytechnic National University,Національний університет Львівська політехніка,Ukraine,Lviv,49.8397,24.0297,europe,https://lpnu.ua,1844,bachelor,Geodesy and Land Management,4
+1091,Kyiv Aviation Institute,Національний авіаційний університет,Ukraine,Kyiv,50.4398,30.4281,europe,https://nau.edu.ua,1933,master,Land Management and Cadastre,1
+1100,SSUGT,СГУГиТ,Russia,Novosibirsk,55.0084,82.9357,europe,https://sgugit.ru,1933,master,Land Management and Cadastre,1
+1101,Saint Petersburg State University of Architecture and Civil Engineering,Санкт-Петербургский государственный архитектурно-строительный университет,Russia,Saint Petersburg,59.9311,30.3609,europe,https://www.spbgasu.ru,1832,bachelor,Urban Cadastre,4
+1101,Saint Petersburg State University of Architecture and Civil Engineering,Санкт-Петербургский государственный архитектурно-строительный университет,Russia,Saint Petersburg,59.9311,30.3609,europe,https://www.spbgasu.ru,1832,master,Real Estate Cadastre of Urbanized Territories,2
+1102,State University of Land Use Planning,Государственный университет по землеустройству,Russia,Moscow,55.7558,37.6173,europe,https://www.guz.ru,1779,bachelor,Land Management and Cadastres,4
+1102,State University of Land Use Planning,Государственный университет по землеустройству,Russia,Moscow,55.7558,37.6173,europe,https://www.guz.ru,1779,master,Land Management and Cadastres,2
+1103,RUDN University,Российский университет дружбы народов,Russia,Moscow,55.6502,37.6685,europe,https://www.rudn.ru,1960,bachelor,Land Management and Cadastres,4
+1103,RUDN University,Российский университет дружбы народов,Russia,Moscow,55.6502,37.6685,europe,https://www.rudn.ru,1960,master,Land Management and Cadastres,2
+1104,Kazan Federal University,Казанский федеральный университет,Russia,Kazan,55.7887,49.1221,europe,https://kpfu.ru,1804,bachelor,Land Development and Land Registry,4
+1104,Kazan Federal University,Казанский федеральный университет,Russia,Kazan,55.7887,49.1221,europe,https://kpfu.ru,1804,master,Land Development and Land Registry,2
+1105,Tomsk Polytechnic University,Томский политехнический университет,Russia,Tomsk,56.4985,84.9714,asia,https://tpu.ru,1896,master,Cadastre and Land Management,2
+1106,Saint Petersburg State University,Санкт-Петербургский государственный университет,Russia,Saint Petersburg,59.9386,30.3141,europe,https://spbu.ru,1724,master,Management of Real Estate Objects and Development of Territories,2
+1110,Belarusian State Agricultural Academy,Белорусская государственная сельскохозяйственная академия,Belarus,Gorki,54.2858,30.9952,europe,https://baa.by,1840,bachelor,Land Management,5
+1110,Belarusian State Agricultural Academy,Белорусская государственная сельскохозяйственная академия,Belarus,Gorki,54.2858,30.9952,europe,https://baa.by,1840,bachelor,Land Cadastre,5
+1111,Polotsk State University,Полоцкий государственный университет,Belarus,Novopolotsk,55.4879,28.7856,europe,https://www.psu.by,1968,bachelor,Land Cadastre,5
+1120,South East Technological University,South East Technological University,Ireland,Waterford,52.2593,,europe,https://www.setu.ie,2022,bachelor,Land Management in Agriculture (Additional Degree),1
+1130,Estonian University of Life Sciences,Eesti Maaülikool,Estonia,Tartu,58.3829,26.6982,europe,https://www.emu.ee,1951,bachelor,"Land Surveying, Property and Land Management",3
+1130,Estonian University of Life Sciences,Eesti Maaülikool,Estonia,Tartu,58.3829,26.6982,europe,https://www.emu.ee,1951,master,"Land Surveying, Property and Land Management",2
+1140,Technical University of Moldova,Universitatea Tehnică a Moldovei,Moldova,Chisinau,47.0105,28.8638,europe,https://utm.md,1964,master,Real Estate and Cadastral Law,2
+1150,Uppsala University,Uppsala universitet,Sweden,Uppsala,59.8586,17.6389,europe,https://www.uu.se,1477,bachelor,Land Management,3
+1151,Lund University,Lunds universitet,Sweden,Lund,55.7047,13.1910,europe,https://www.lu.se,1666,master,Land Surveying,2
+1170,University of Belgrade,Универзитет у Београду,Serbia,Belgrade,44.8176,20.4633,europe,https://www.bg.ac.rs,1808,master,Land Law and Economy,2
+1180,Czech University of Life Sciences Prague,Česká zemědělská univerzita v Praze,Czech Republic,Prague,50.1279,14.3727,europe,https://www.czu.cz,1906,master,Land and Water Management,2
+1190,Óbuda University,Óbudai Egyetem,Hungary,Budapest,47.5288,19.0526,europe,https://www.uni-obuda.hu,2010,bachelor,Land Surveying and Land Management Engineering,3
+1200,Bangor University,Prifysgol Bangor,United Kingdom,Bangor,53.2274,,europe,https://www.bangor.ac.uk,1884,master,Conservation and Land Management,1
+1201,University of Edinburgh,University of Edinburgh,United Kingdom,Edinburgh,55.9444,,europe,https://www.ed.ac.uk,1583,master,Sustainable Lands and Cities,1
+1202,Harper Adams University,Harper Adams University,United Kingdom,Newport,52.7794,,europe,https://www.harper-adams.ac.uk,1901,master,Land & Property Management,1
+1202,Harper Adams University,Harper Adams University,United Kingdom,Newport,52.7794,,europe,https://www.harper-adams.ac.uk,1901,master,Rural Estate and Land Management,1
+1203,Royal Agricultural University,Royal Agricultural University,United Kingdom,Cirencester,51.7112,,europe,https://www.rau.ac.uk,1845,bachelor,Rural Land Management,3
+1204,University of Reading,University of Reading,United Kingdom,Reading,51.4414,,europe,https://www.reading.ac.uk,1892,bachelor,Sustainable Land Management,3
+1205,University of Cambridge,University of Cambridge,United Kingdom,Cambridge,52.2043,0.1218,europe,https://www.cam.ac.uk,1209,bachelor,Land Economy,3
+1205,University of Cambridge,University of Cambridge,United Kingdom,Cambridge,52.2043,0.1218,europe,https://www.cam.ac.uk,1209,master,Land Economy,1
+1210,University of West Attica,Πανεπιστήμιο Δυτικής Αττικής,Greece,Athens,38.0006,23.6752,europe,https://www.uniwa.gr,2018,master,Land Management & Real Estate,2
+1300,Poznan University of Life Sciences,Uniwersytet Przyrodniczy w Poznaniu,Poland,Poznań,52.4064,16.9252,europe,https://www.up.poznan.pl,1951,bachelor,Land Resource Management,4
+2000,Nanjing Agricultural University,南京农业大学,China,Nanjing,32.0603,118.7969,asia,https://www.njau.edu.cn,1902,bachelor,Land Resource Management,4
+2000,Nanjing Agricultural University,南京农业大学,China,Nanjing,32.0603,118.7969,asia,https://www.njau.edu.cn,1902,master,Land Resource Management,3
+2001,China University of Geosciences (Wuhan),中国地质大学（武汉）,China,Wuhan,30.525,114.395,asia,https://www.cug.edu.cn,1952,bachelor,Land Resource Management,4
+2001,China University of Geosciences (Wuhan),中国地质大学（武汉）,China,Wuhan,30.525,114.395,asia,https://www.cug.edu.cn,1952,master,Land Resource Management,3
+2002,Renmin University of China,中国人民大学,China,Beijing,39.9691,116.3145,asia,https://www.ruc.edu.cn,1950,bachelor,Land Resource Management,4
+2002,Renmin University of China,中国人民大学,China,Beijing,39.9691,116.3145,asia,https://www.ruc.edu.cn,1950,master,Land Resource Management,3
+2003,Zhejiang University,浙江大学,China,Hangzhou,30.3053,120.0916,asia,https://www.zju.edu.cn,1897,bachelor,Land Resource Management,4
+2003,Zhejiang University,浙江大学,China,Hangzhou,30.3053,120.0916,asia,https://www.zju.edu.cn,1897,master,Land Resource Management,3
+2004,Nanjing University,南京大学,China,Nanjing,32.0566,118.7789,asia,https://www.nju.edu.cn,1902,master,Land Resource Management,3
+2005,Wuhan University,武汉大学,China,Wuhan,30.5365,114.3643,asia,https://www.whu.edu.cn,1893,bachelor,Land Resource Management,4
+2005,Wuhan University,武汉大学,China,Wuhan,30.5365,114.3643,asia,https://www.whu.edu.cn,1893,master,Land Resource Management,3
+2006,Huazhong University of Science and Technology,华中科技大学,China,Wuhan,30.5130,114.4202,asia,https://www.hust.edu.cn,1953,master,Land Resource Management,3
+2007,Sichuan University,四川大学,China,Chengdu,30.6253,104.0830,asia,https://www.scu.edu.cn,1896,bachelor,Land Resource Management,4
+2007,Sichuan University,四川大学,China,Chengdu,30.6253,104.0830,asia,https://www.scu.edu.cn,1896,master,Land Resource Management,3
+2008,Beijing Normal University,北京师范大学,China,Beijing,39.9619,116.3662,asia,https://www.bnu.edu.cn,1902,bachelor,Land Resource Management,4
+2008,Beijing Normal University,北京师范大学,China,Beijing,39.9619,116.3662,asia,https://www.bnu.edu.cn,1902,master,Land Resource Management,3
+2009,China Agricultural University,中国农业大学,China,Beijing,40.0025,116.3563,asia,https://www.cau.edu.cn,1905,bachelor,Land Resource Management,4
+2009,China Agricultural University,中国农业大学,China,Beijing,40.0025,116.3563,asia,https://www.cau.edu.cn,1905,master,Land Resource Management,3
+2010,Jilin University,吉林大学,China,Changchun,43.8256,125.2848,asia,https://www.jlu.edu.cn,1946,bachelor,Land Resource Management,4
+2010,Jilin University,吉林大学,China,Changchun,43.8256,125.2848,asia,https://www.jlu.edu.cn,1946,master,Land Resource Management,3
+2011,Northeastern University,东北大学,China,Shenyang,41.7658,123.4196,asia,https://www.neu.edu.cn,1923,bachelor,Land Resource Management,4
+2011,Northeastern University,东北大学,China,Shenyang,41.7658,123.4196,asia,https://www.neu.edu.cn,1923,master,Land Resource Management,3
+2012,Lanzhou University,兰州大学,China,Lanzhou,36.0461,103.8593,asia,https://www.lzu.edu.cn,1909,master,Land Resource Management,3
+2013,Northwest A&F University,西北农林科技大学,China,Yangling,34.2658,108.0729,asia,https://www.nwafu.edu.cn,1934,bachelor,Land Resource Management,4
+2013,Northwest A&F University,西北农林科技大学,China,Yangling,34.2658,108.0729,asia,https://www.nwafu.edu.cn,1934,master,Land Resource Management,3
+2014,Ocean University of China,中国海洋大学,China,Qingdao,36.0621,120.329,asia,https://www.ouc.edu.cn,1924,master,Land Resource Management,3
+2015,China University of Mining and Technology,中国矿业大学,China,Xuzhou,34.2205,117.1417,asia,https://www.cumt.edu.cn,1909,bachelor,Land Resource Management,4
+2015,China University of Mining and Technology,中国矿业大学,China,Xuzhou,34.2205,117.1417,asia,https://www.cumt.edu.cn,1909,master,Land Resource Management,3
+2016,Hohai University,河海大学,China,Nanjing,32.059,118.769,asia,https://www.hhu.edu.cn,1915,bachelor,Land Resource Management,4
+2016,Hohai University,河海大学,China,Nanjing,32.059,118.769,asia,https://www.hhu.edu.cn,1915,master,Land Resource Management,3
+2017,Sichuan Agricultural University,四川农业大学,China,Ya'an,29.9824,103.0018,asia,https://www.sicau.edu.cn,1906,bachelor,Land Resource Management,4
+2017,Sichuan Agricultural University,四川农业大学,China,Ya'an,29.9824,103.0018,asia,https://www.sicau.edu.cn,1906,master,Land Resource Management,3
+2018,Southwest University,西南大学,China,Chongqing,29.8133,106.4286,asia,https://www.swu.edu.cn,1906,bachelor,Land Resource Management,4
+2018,Southwest University,西南大学,China,Chongqing,29.8133,106.4286,asia,https://www.swu.edu.cn,1906,master,Land Resource Management,3
+2019,Chang'an University,长安大学,China,Xi'an,34.2273,108.9632,asia,https://www.chd.edu.cn,1951,bachelor,Land Resource Management,4
+2019,Chang'an University,长安大学,China,Xi'an,34.2273,108.9632,asia,https://www.chd.edu.cn,1951,master,Land Resource Management,3
+2020,Huazhong Agricultural University,华中农业大学,China,Wuhan,30.4749,114.3555,asia,https://www.hzau.edu.cn,1898,bachelor,Land Resource Management,4
+2020,Huazhong Agricultural University,华中农业大学,China,Wuhan,30.4749,114.3555,asia,https://www.hzau.edu.cn,1898,master,Land Resource Management,3
+2021,Northeast Agricultural University,东北农业大学,China,Harbin,45.7446,126.7263,asia,https://www.neau.edu.cn,1948,bachelor,Land Resource Management,4
+2021,Northeast Agricultural University,东北农业大学,China,Harbin,45.7446,126.7263,asia,https://www.neau.edu.cn,1948,master,Land Resource Management,3
+2022,China University of Geosciences (Beijing),中国地质大学（北京）,China,Beijing,40.000,116.3407,asia,https://www.cugb.edu.cn,1952,bachelor,Land Resource Management,4
+2022,China University of Geosciences (Beijing),中国地质大学（北京）,China,Beijing,40.000,116.3407,asia,https://www.cugb.edu.cn,1952,master,Land Resource Management,3
+2100,IPB University,Institut Pertanian Bogor,Indonesia,Bogor,,106.7246,asia,https://www.ipb.ac.id,1963,bachelor,Land Resource Management,4
+2110,University Putra Malaysia,Universiti Putra Malaysia,Malaysia,Serdang,2.9936,101.7139,asia,https://www.upm.edu.my,1971,bachelor,Land Administration & Development,4
+2110,University Putra Malaysia,Universiti Putra Malaysia,Malaysia,Serdang,2.9936,101.7139,asia,https://www.upm.edu.my,1971,master,Land Administration and Development,2
+2111,University Teknologi Malaysia,Universiti Teknologi Malaysia,Malaysia,Johor Bahru,1.5603,103.6376,asia,https://www.utm.my,1972,bachelor,Land Administration,3
+2120,Visayas State University,Visayas State University,Philippines,Baybay,10.7482,124.7948,asia,https://www.vsu.edu.ph,1924,master,Land Administration and Management,2
+2121,University of the Philippines Open University,Unibersidad ng Pilipinas Open University,Philippines,Los Baños,14.1651,121.2425,asia,https://www.upou.edu.ph,1995,master,Land Valuation and Management,2
+2130,Royal University of Law and Economics,សាកលវិទ្យាល័យភូមិន្ទនីតិសាស្ត្រ និងវិទ្យាសាស្ត្រសេដ្ឋកិច្ច,Cambodia,Phnom Penh,11.5709,104.8980,asia,https://www.rule.edu.kh,2003,master,Land Law and Real Estate,2
+2131,Royal University of Agriculture,សាកលវិទ្យាល័យភូមិន្ទកសិកម្ម,Cambodia,Phnom Penh,11.49,104.85,asia,https://www.rua.edu.kh,1964,bachelor,Land Management and Land Administration,4
+2140,Can Tho University,Đại học Cần Thơ,Vietnam,Can Tho,10.0299,105.7685,asia,https://www.ctu.edu.vn,1966,bachelor,Land Management,4
+2140,Can Tho University,Đại học Cần Thơ,Vietnam,Can Tho,10.0299,105.7685,asia,https://www.ctu.edu.vn,1966,master,Land Management,2
+2141,Vietnam National University of Agriculture,Học viện Nông nghiệp Việt Nam,Vietnam,Hanoi,21.0042,105.9350,asia,https://www.vnua.edu.vn,1956,bachelor,Land Management,4
+2141,Vietnam National University of Agriculture,Học viện Nông nghiệp Việt Nam,Vietnam,Hanoi,21.0042,105.9350,asia,https://www.vnua.edu.vn,1956,master,Land Management,2
+2142,Nam Can Tho University,Đại học Nam Cần Thơ,Vietnam,Can Tho,10.0186,105.7614,asia,https://www.nctu.edu.vn,2014,bachelor,Land Management,4
+2142,Nam Can Tho University,Đại học Nam Cần Thơ,Vietnam,Can Tho,10.0186,105.7614,asia,https://www.nctu.edu.vn,2014,master,Land Management,2
+2143,Hue University,Đại học Huế,Vietnam,Hue,16.4619,107.5955,asia,https://www.hueuni.edu.vn,1957,bachelor,Land Management,4
+2143,Hue University,Đại học Huế,Vietnam,Hue,16.4619,107.5955,asia,https://www.hueuni.edu.vn,1957,master,Land Management,2
+2144,Hue University of Agriculture and Forestry,Đại học Nông Lâm Huế,Vietnam,Hue,16.45,107.57,asia,https://www.huaf.edu.vn,1967,bachelor,Land Management,4
+2144,Hue University of Agriculture and Forestry,Đại học Nông Lâm Huế,Vietnam,Hue,16.45,107.57,asia,https://www.huaf.edu.vn,1967,master,Land Management,2
+2150,Jagannath University,জগন্নাথ বিশ্ববিদ্যালয়,Bangladesh,Dhaka,23.712,90.4097,asia,https://www.jnu.ac.bd,1858,master,Law (Land Management),1
+2160,Kathmandu University,काठमाडौं विश्वविद्यालय,Nepal,Dhulikhel,27.6192,85.5387,asia,https://www.ku.edu.np,1991,master,Land Administration,2
+2170,Almaty University,Алматы университеті,Kazakhstan,Almaty,43.21,76.89,asia,https://www.almau.edu.kz,1996,bachelor,Land Management,4
+2171,Kazakh National Research Technical University,Қазақ ұлттық зерттеу техникалық университеті,Kazakhstan,Almaty,43.2363,76.9094,asia,https://satbayev.university,1934,master,Land Management,2
+2172,Al-Farabi Kazakh National University,Әл-Фараби атындағы Қазақ ұлттық университеті,Kazakhstan,Almaty,43.21,76.85,asia,https://www.kaznu.kz,1934,bachelor,Land Management,4
+2172,Al-Farabi Kazakh National University,Әл-Фараби атындағы Қазақ ұлттық университеті,Kazakhstan,Almaty,43.21,76.85,asia,https://www.kaznu.kz,1934,master,Land Management,2
+2173,D. Serikbayev East Kazakhstan Technical University,Д. Серікбаев атындағы Шығыс Қазақстан техникалық университеті,Kazakhstan,Ust-Kamenogorsk,49.9480,82.6276,asia,https://www.ektu.kz,1958,bachelor,Land Cadastre and Land Management,4
+2180,Tashkent State Agrarian University,Toshkent davlat agrar universiteti,Uzbekistan,Tashkent,41.3462,69.2044,asia,https://www.tdau.uz,1930,bachelor,Land Cadastre and Land Management,4
+2180,Tashkent State Agrarian University,Toshkent davlat agrar universiteti,Uzbekistan,Tashkent,41.3462,69.2044,asia,https://www.tdau.uz,1930,master,Use and Management of Land Resources,2
+2190,Kyrgyz National Agrarian University,Кыргыз улуттук агрардык университети,Kyrgyzstan,Bishkek,42.8439,74.5821,asia,https://www.knau.kg,1933,bachelor,Land Management and Cadastre,4
+2190,Kyrgyz National Agrarian University,Кыргыз улуттук агрардык университети,Kyrgyzstan,Bishkek,42.8439,74.5821,asia,https://www.knau.kg,1933,master,Land Management and Cadastre,2
+2200,Al-Quds University,جامعة القدس,Palestine,Jerusalem,31.76,35.26,asia,https://www.alquds.edu,1984,master,Land Management,2
+2210,Arab American University,الجامعة العربية الأمريكية,Palestine,Jenin,32.4601,35.2924,asia,https://www.aaup.edu,2000,master,Land and Real Estate Management,2
+2220,University of Duhok,زانكۆی دهۆك,Iraq,Duhok,36.8607,42.98,asia,https://www.uod.ac,1992,course,Land Governance,0
+2230,University of Jordan,الجامعة الأردنية,Jordan,Amman,32.0128,35.8727,asia,https://www.ju.edu.jo,1962,bachelor,Land Water and Environment,4
+2230,University of Jordan,الجامعة الأردنية,Jordan,Amman,32.0128,35.8727,asia,https://www.ju.edu.jo,1962,master,Land Water and Environment,2
+2240,National Chengchi University,國立政治大學,Taiwan (Chinese Taipei),Taipei,24.9868,121.5758,asia,https://www.nccu.edu.tw,1927,bachelor,Land Management,4
+2240,National Chengchi University,國立政治大學,Taiwan (Chinese Taipei),Taipei,24.9868,121.5758,asia,https://www.nccu.edu.tw,1927,bachelor,Land Resource Planning,4
+2240,National Chengchi University,國立政治大學,Taiwan (Chinese Taipei),Taipei,24.9868,121.5758,asia,https://www.nccu.edu.tw,1927,master,Land Economics,2
+2241,Chang Jung Christian University,長榮大學,Taiwan (Chinese Taipei),Tainan,22.9055,120.2727,asia,https://www.cjcu.edu.tw,1993,bachelor,Land Management and Development,4
+2250,Cheongju University,청주대학교,South Korea,Cheongju,36.6372,127.4897,asia,https://www.cju.ac.kr,1947,master,Land Management,2
+3001,Kwame Nkrumah University of Science and Technology,Kwame Nkrumah University of Science and Technology,Ghana,Kumasi,6.6739,,africa,https://www.knust.edu.gh,1952,bachelor,Land Economy,4
+3001,Kwame Nkrumah University of Science and Technology,Kwame Nkrumah University of Science and Technology,Ghana,Kumasi,6.6739,,africa,https://www.knust.edu.gh,1952,master,Land Governance and Policy,2
+3011,Makerere University,Makerere University,Uganda,Kampala,0.3347,32.5695,africa,https://www.mak.ac.ug,1922,bachelor,Land Economics,4
+3011,Makerere University,Makerere University,Uganda,Kampala,0.3347,32.5695,africa,https://www.mak.ac.ug,1922,master,Land Management,2
+3021,Namibia University of Science and Technology,Namibia University of Science and Technology,Namibia,Windhoek,,17.0658,africa,https://www.nust.na,1994,bachelor,Land Management,4
+3021,Namibia University of Science and Technology,Namibia University of Science and Technology,Namibia,Windhoek,,17.0658,africa,https://www.nust.na,1994,master,Land and Water Management ,2
+3030,Alexandria University,جامعة الإسكندرية,Egypt,Alexandria,31.2016,29.9113,africa,https://agr.alexu.edu.eg,1942,master,Sustainable Land Management,2
+3040,Federal University Oye Ekiti,Federal University Oye Ekiti,Nigeria,Oye Ekiti,7.7983,5.3173,africa,http://ssc.fuoye.edu.ng,2011,bachelor,Agriculture in Soil Science and Land Resources Management,5
+3040,Federal University Oye Ekiti,Federal University Oye Ekiti,Nigeria,Oye Ekiti,7.7983,5.3173,africa,http://ssc.fuoye.edu.ng,2011,master,Soil Science & Land Resources Management,2
+3041,University of Benin,University of Benin,Nigeria,Benin City,6.3350,5.6037,africa,https://www.uniben.edu,1970,master,Soil Science And Land Management,2
+3050,Gaston Berger University,Université Gaston Berger,Senegal,Saint-Louis,16.0326,,africa,https://www.ugb.sn,1990,master,Land Governance and Territory Management,2
+3060,Njala University,Njala University,Sierra Leone,Njala Koryama,7.9355,,africa,https://www.njala.edu.sl,1964,bachelor,Land Resource Management,4
+3060,Njala University,Njala University,Sierra Leone,Njala Koryama,7.9355,,africa,https://www.njala.edu.sl,1964,master,Land Administration and Management,1
+3002,University of Cape Coast,University of Cape Coast,Ghana,Cape Coast,5.1037,,africa,https://ucc.edu.gh,1962,master,Land Policy and Administration,2
+3070,University of Lomé,Université de Lomé,Togo,Lomé,6.1764,1.2119,africa,https://www.univ-lome.tg,1970,bachelor,Geography - Land Use Planning Specialty,3
+3080,Bahir Dar University,ባሕር ዳር ዩኒቨርሲቲ,Ethiopia,Bahir Dar,11.5742,37.3614,africa,https://www.bdu.edu.et,2000,bachelor,Land Administration,4
+3080,Bahir Dar University,ባሕር ዳር ዩኒቨርሲቲ,Ethiopia,Bahir Dar,11.5742,37.3614,africa,https://www.bdu.edu.et,2000,master,Land Administration and Management,2
+3090,Ramaas University,Jaamacadda Ramaas,Somalia,Mogadishu,2.0469,45.3182,africa,https://www.ramaas.edu.so,2013,bachelor,Land and Water Management,4
+3100,Malawi University of Business and Applied Sciences,Malawi University of Business and Applied Sciences,Malawi,Blantyre,,35.0058,africa,https://www.mubas.ac.mw,2012,bachelor,Land Economy,4
+3100,Malawi University of Business and Applied Sciences,Malawi University of Business and Applied Sciences,Malawi,Blantyre,,35.0058,africa,https://www.mubas.ac.mw,2012,bachelor,Land Surveying,4
+3100,Malawi University of Business and Applied Sciences,Malawi University of Business and Applied Sciences,Malawi,Blantyre,,35.0058,africa,https://www.mubas.ac.mw,2012,master,Land Governance,2
+3110,Taniform University,Taniform University,Cameroon,Bamenda,5.9458,10.1504,africa,https://www.taniform.org,2015,bachelor,Land & Survey,3
+3120,Kenyatta University,Kenyatta University,Kenya,Nairobi,,36.9318,africa,https://www.ku.ac.ke,1985,master,Land Water Management,2
+3121,Technical University of Kenya,Technical University of Kenya,Kenya,Nairobi,,36.8219,africa,https://www.tukenya.ac.ke,2013,bachelor,Land Administration,4
+3121,Technical University of Kenya,Technical University of Kenya,Kenya,Nairobi,,36.8219,africa,https://www.tukenya.ac.ke,2013,master,Land Administration,2
+3122,University of Nairobi,University of Nairobi,Kenya,Nairobi,,36.8172,africa,https://www.uonbi.ac.ke,1956,master,Land and Water Management,2
+3123,Jaramogi Oginga Odinga University of Science and Technology,Jaramogi Oginga Odinga University of Science and Technology,Kenya,Bondo,,34.2700,africa,https://www.jooust.ac.ke,2011,bachelor,Land Use and Natural Resources Management,4
+3124,Jomo Kenyatta University of Agriculture and Technology,Jomo Kenyatta University of Agriculture and Technology,Kenya,Juja,,37.0117,africa,https://www.jkuat.ac.ke,1994,bachelor,Land Use and Natural Resources Management,4
+3124,Jomo Kenyatta University of Agriculture and Technology,Jomo Kenyatta University of Agriculture and Technology,Kenya,Juja,,37.0117,africa,https://www.jkuat.ac.ke,1994,master,Land Resource Planning and Management,2
+3130,INES-Ruhengeri,Institut d'Enseignement Supérieur de Ruhengeri,Rwanda,Ruhengeri,,29.6346,africa,https://www.ines.ac.rw,2003,bachelor,Land Management and Valuation,4
+3140,Ardhi University,Chuo Kikuu cha Ardhi,Tanzania,Dar es Salaam,,39.2083,africa,https://www.aru.ac.tz,2007,bachelor,Land Management and Valuation,4
+3140,Ardhi University,Chuo Kikuu cha Ardhi,Tanzania,Dar es Salaam,,39.2083,africa,https://www.aru.ac.tz,2007,master,Land Administration,2
+3141,Institute of Rural Development Planning,Taasisi ya Mipango ya Maendeleo ya Vijijini,Tanzania,Dodoma,,35.7516,africa,https://www.irdp.ac.tz,1975,bachelor,Land Management and Valuation,4
+3150,University of Zambia,University of Zambia,Zambia,Lusaka,,28.3228,africa,https://www.unza.zm,1965,bachelor,Agricultural Sciences (Land Management),4
+3150,University of Zambia,University of Zambia,Zambia,Lusaka,,28.3228,africa,https://www.unza.zm,1965,master,Sustainable Land and Environmental Management,2
+3160,Midlands State University,Midlands State University,Zimbabwe,Gweru,,29.8167,africa,https://www.msu.ac.zw,1999,bachelor,Land and Water Resources,4
+3160,Midlands State University,Midlands State University,Zimbabwe,Gweru,,29.8167,africa,https://www.msu.ac.zw,1999,master,Land and Water Resource Management,2
+3160,Midlands State University,Midlands State University,Zimbabwe,Gweru,,29.8167,africa,https://www.msu.ac.zw,1999,master,Land Resource Assessment for Development Planning,2
+3170,University of Botswana,University of Botswana,Botswana,Gaborone,,25.9122,africa,https://www.ub.bw,1982,bachelor,Land Management,4
+3180,University of the Free State,Universiteit van die Vrystaat,South Africa,Bloemfontein,,26.1845,africa,https://www.ufs.ac.za,1904,master,Land and Property Development Management,2
+3181,University of the Western Cape,Universiteit van Wes-Kaapland,South Africa,Bellville,,18.6264,africa,https://www.uwc.ac.za,1959,master,Land and Agrarian Studies,2
+6000,RMIT University,RMIT University,Australia,Melbourne,,144.9643,oceania,https://www.rmit.edu.au,1887,master,Conservation and Land Management,2
+6001,The University of Western Australia,The University of Western Australia,Australia,Perth,,115.8190,oceania,https://www.uwa.edu.au,1911,postgraduate,Land Administration,1
+6002,Deakin University,Deakin University,Australia,Melbourne,,145.1139,oceania,https://www.deakin.edu.au,1974,master,Land and Sea Country Management,2
+6003,James Cook University,James Cook University,Australia,Townsville,,146.7570,oceania,https://www.jcu.edu.au,1970,bachelor,Land and Water Management,4
+6004,Swinburne University of Technology,Swinburne University of Technology,Australia,Melbourne,,145.0351,oceania,https://www.swinburne.edu.au,1908,master,Conservation and Land Management,2
+6010,Lincoln University,Lincoln University,New Zealand,Lincoln,,172.4886,oceania,https://www.lincoln.ac.nz,1878,bachelor,Land and Property Management,3
+6020,The University of the South Pacific,The University of the South Pacific,Fiji,Suva,,178.4434,oceania,https://www.usp.ac.fj,1968,bachelor,Land Management,4
+6020,The University of the South Pacific,The University of the South Pacific,Fiji,Suva,,178.4434,oceania,https://www.usp.ac.fj,1968,master,Land Management,2
+4000,Fleming College,Fleming College,Canada,Lindsay,44.3508,,northamerica,https://flemingcollege.ca,1967,master,Environmental Land Management,2
+4001,The University of British Columbia,The University of British Columbia,Canada,Vancouver,49.2606,,northamerica,https://www.ubc.ca,1908,master,Master of Land and Water Systems,2
+4002,University of Calgary,University of Calgary,Canada,Calgary,51.0779,,northamerica,https://www.ucalgary.ca,1966,bachelor,Professional Land Management,4
+4010,"University of Technology, Jamaica","University of Technology, Jamaica",Jamaica,Kingston,18.0156,,northamerica,https://www.utech.edu.jm,1958,master,Land Management (MSc Built Environment major),2
+4020,"The University of the West Indies, St. Augustine","The University of the West Indies, St. Augustine",Trinidad and Tobago,St. Augustine,10.6410,,northamerica,https://sta.uwi.edu,1960,bachelor,BSc Land Management (Valuation),4
+4030,The University of Texas Permian Basin,The University of Texas Permian Basin,United States,Odessa,31.8902,,northamerica,https://www.utpb.edu,1973,bachelor,Energy Land Management (Landman),4
+4031,Everglades University,Everglades University,United States,Boca Raton,26.3745,,northamerica,https://www.evergladesuniversity.edu,1990,bachelor,Land & Energy Management,4
+4032,Lincoln Institute of Land Policy,Lincoln Institute of Land Policy,United States,Cambridge,42.3755,,northamerica,https://www.lincolninst.edu,1946,master,Land Policy and Sustainable Urban Development,2
+4033,Marietta College,Marietta College,United States,Marietta,39.4173,,northamerica,https://www.marietta.edu,1835,bachelor,Land and Energy Management,4
+4034,University of Louisiana at Lafayette,University of Louisiana at Lafayette,United States,Lafayette,30.2127,,northamerica,https://www.louisiana.edu,1898,bachelor,Professional Land & Resource Management Program,3
+4034,University of Louisiana at Lafayette,University of Louisiana at Lafayette,United States,Lafayette,30.2127,,northamerica,https://www.louisiana.edu,1898,bachelor,"Environmental, Energy and Land Management",4
+4035,Columbia Southern University,Columbia Southern University,United States,Orange Beach,30.2905,,northamerica,https://www.columbiasouthern.edu,1993,bachelor,Occupational Safety and Health – Energy and Land-Use Management,4
+5000,Federal University of Santa Catarina,Universidade Federal de Santa Catarina,Brazil,Florianópolis,,,southamerica,https://ufsc.br,1960,master,Transport Engineering and Land Management,2
+5010,University of Chile,Universidad de Chile,Chile,Santiago,,,southamerica,https://www.uchile.cl,1842,master,Soil and Water Management,2
+5010,University of Chile,Universidad de Chile,Chile,Santiago,,,southamerica,https://www.uchile.cl,1842,master,Territorial Management of Natural Resources,2
