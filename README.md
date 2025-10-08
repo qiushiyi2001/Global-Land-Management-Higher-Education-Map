@@ -62,6 +62,14 @@ The author wishes to express deep gratitude to Prof. Dr. Walter Timo de Vries fr
 
 Further sincere appreciation is extended to: Prof. Dr. Todorovski Dimo (University of Twente) and Prof. Dr. Simon Hull (University of Cape Town) for their support. Special thanks are also due to M.Sc. Tobias Bendzko, M.Sc. Walter Dachaga, and M.Sc. Vineet Chaturvedi (all from the Technical University of Munich) for providing important opinions and valuable feedback during the development process.
 
+Acknowledgment for Information Contribution:
+
+Tanzania: Dr. Kiula Kiula
+
+South America: lía lópez 
+
+Türkiye: Ezgi Turgut
+
 ---
 
 ## **Data Collection Methodology**
